@@ -268,7 +268,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 | **P3 — Quiz & auto-chấm** ✅ | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
 | **P4 — Điểm danh & TA** ✅ | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
 | **P5 — Calendar** ✅ | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
-| **P6 — Thi & Lockdown** | Tạo đề nhiều module (preset Math 35/22, RW 32/27), **Durable Object phòng thi** (timer, autosave, alarm, WebSocket), lockdown client, proctor log, màn giám sát realtime, auto-submit qua cron, bảng điểm thi | **2.5 tuần** |
+| **P6 — Thi & Lockdown** ✅ | Tạo đề nhiều module (preset Math 35/22, RW 32/27), **Durable Object phòng thi** (timer, autosave, alarm, WebSocket), lockdown client, proctor log, màn giám sát realtime, auto-submit qua cron, bảng điểm thi | **2.5 tuần** |
 | **P7 — Email & hoàn thiện** | Resend + React Email qua Queue: tài khoản mới, bài tập mới, bài được trả, nhắc deadline (cron); thông báo in-app qua `ROOM` DO; responsive; audit lại guard; custom domain + deploy production | 1 tuần |
 
 **Chạy song song được:** P5 độc lập, xen kẽ khi chờ review P4.
@@ -334,8 +334,6 @@ Gate xanh: `typecheck` · `lint` · `test` (9/9 phân quyền trên D1 thật) �
 - Upload đi qua Worker nên chặn ở 25MB. File lớn hơn (đề scan nhiều trang) cần presigned URL
   thẳng lên R2 — phải làm trước khi học sinh nộp bài chụp ảnh ở P2.
 - Chưa dọn file mồ côi trong R2 khi xoá lớp. Cần một cron quét theo prefix `class/{id}/`.
-- Ảnh trong đề (`questions.image_r2_key`) đã có cột và đã hiển thị được, nhưng trình soạn đề
-  chưa có nút dán ảnh. Cần trước khi nhập đề Math thật vì đề có nhiều biểu đồ.
 - Chấm tay câu tự luận hiện là một ô điểm cho cả bài, chưa chấm từng câu. Đủ dùng cho bài tập,
   nhưng đề thi có phần tự luận thì cần chấm theo câu.
 - `npm run typecheck` phải chạy `next typegen` trước `tsc`: `next dev` ghi `.next/dev/types` với
@@ -343,6 +341,9 @@ Gate xanh: `typecheck` · `lint` · `test` (9/9 phân quyền trên D1 thật) �
   lúc đó dev server đã mở trang nào. Đã loại `.next/dev` khỏi tsconfig.
 - `opennextjs-cloudflare build` GHI ĐÈ script `build` trong package.json mỗi lần chạy. Vì vậy
   `build` = `next build` (gate nhanh cho CI) và `build:cf` = pipeline OpenNext để deploy.
+- Chốt lượt thi hiện là lazy. Muốn chốt đúng giây mà không cần ai mở trang thì phải có
+  Worker thứ hai chạy cron gọi vào endpoint nội bộ — cùng hạ tầng với hướng Durable Object.
+- Nhắc deadline bằng cron (P7) cũng vướng đúng giới hạn này: sẽ cần Worker phụ hoặc lịch ngoài.
 
 ### P1 — Lớp học ✅ xong
 

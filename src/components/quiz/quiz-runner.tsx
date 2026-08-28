@@ -145,6 +145,15 @@ export function QuizRunner({
 
             <p className="mb-4 whitespace-pre-wrap text-body">{q.prompt}</p>
 
+            {q.imageR2Key && (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={`/api/question-image?key=${encodeURIComponent(q.imageR2Key)}`}
+                alt="Hình của câu hỏi"
+                className="mb-4 max-h-[380px] rounded-[var(--radius-md)] border border-line"
+              />
+            )}
+
             {q.type === "mcq" && q.choices && (
               <ul className="space-y-2">
                 {q.choices.map((c) => {

@@ -62,6 +62,15 @@ export function QuizReview({
 
             <p className="mb-3 whitespace-pre-wrap text-body">{q.prompt}</p>
 
+            {q.imageR2Key && (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={`/api/question-image?key=${encodeURIComponent(q.imageR2Key)}`}
+                alt="Hình của câu hỏi"
+                className="mb-3 max-h-[380px] rounded-[var(--radius-md)] border border-line"
+              />
+            )}
+
             {q.type === "mcq" && q.choices && (
               <ul className="space-y-1.5">
                 {q.choices.map((c) => {

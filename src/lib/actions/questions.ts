@@ -4,8 +4,11 @@ import { revalidatePath } from "next/cache";
 import { requireClassRole } from "@/lib/auth/guard";
 import { ANY_MEMBER, STAFF } from "@/lib/auth/policy";
 import {
+  createExamQuestion,
   createQuestion,
+  deleteExamQuestion,
   deleteQuestion,
+  importExamQuestions,
   importQuestions,
   saveAnswer,
   type ChoiceOption,
@@ -19,6 +22,18 @@ function revalidateAssignment(classId: string, assignmentId: string) {
   }
 }
 
+/**
+ * Cùng một trình soạn đề dùng cho hai chỗ: bài tập và module đề thi.
+ * Form gửi lên `assignmentId` HOẶC `moduleId`, không bao giờ cả hai.
+ */
+function readTarget(form: FormData) {
+  const assignmentId = String(form.get("assignmentId") ?? "");
+  const moduleId = String(form.get("moduleId") ?? "");
+  if (assignmentId) return { kind: "assignment" as const, id: assignmentId };
+  if (moduleId) return { kind: "module" as const, id: moduleId };
+  return null;
+}
+
 /* ----------------------------- Soạn đề ----------------------------- */
 
 export async function addQuestionAction(
@@ -26,7 +41,8 @@ export async function addQuestionAction(
   form: FormData,
 ): Promise<ActionState> {
   const classId = String(form.get("classId") ?? "");
-  const assignmentId = String(form.get("assignmentId") ?? "");
+  const target = readTarget(form);
+  if (!target) return { error: "Thiếu bài tập hoặc module đích." };
   const ctx = await requireClassRole(classId, STAFF);
 
   const type = String(form.get("type") ?? "mcq") as "mcq" | "grid_in" | "free_text";
@@ -41,8 +57,7 @@ export async function addQuestionAction(
 
   const acceptedRaw = String(form.get("acceptedAnswers") ?? "").trim();
 
-  try {
-    await createQuestion(ctx, assignmentId, {
+  const payload = {
       type,
       prompt: String(form.get("prompt") ?? ""),
       choices: type === "mcq" ? choices : null,
@@ -55,22 +70,35 @@ export async function addQuestionAction(
       points: Number(form.get("points") ?? 1),
       domain: String(form.get("domain") ?? ""),
       skillTag: String(form.get("skillTag") ?? ""),
-    });
+      imageR2Key: String(form.get("imageR2Key") ?? "") || null,
+  };
+
+  try {
+    if (target.kind === "assignment") await createQuestion(ctx, target.id, payload);
+    else await createExamQuestion(ctx, target.id, payload);
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Không thêm được câu hỏi." };
   }
 
-  revalidateAssignment(classId, assignmentId);
+  if (target.kind === "assignment") revalidateAssignment(classId, target.id);
+  else revalidatePath(`/teacher/classes/${classId}/exams`, "layout");
   return { ok: "Đã thêm câu hỏi." };
 }
 
 export async function deleteQuestionAction(form: FormData): Promise<void> {
   const classId = String(form.get("classId") ?? "");
-  const assignmentId = String(form.get("assignmentId") ?? "");
+  const target = readTarget(form);
+  if (!target) return;
   const ctx = await requireClassRole(classId, STAFF);
+  const questionId = String(form.get("questionId") ?? "");
 
-  await deleteQuestion(ctx, assignmentId, String(form.get("questionId") ?? ""));
-  revalidateAssignment(classId, assignmentId);
+  if (target.kind === "assignment") {
+    await deleteQuestion(ctx, target.id, questionId);
+    revalidateAssignment(classId, target.id);
+  } else {
+    await deleteExamQuestion(ctx, target.id, questionId);
+    revalidatePath(`/teacher/classes/${classId}/exams`, "layout");
+  }
 }
 
 /**
@@ -84,7 +112,8 @@ export async function importQuestionsAction(
   form: FormData,
 ): Promise<ActionState> {
   const classId = String(form.get("classId") ?? "");
-  const assignmentId = String(form.get("assignmentId") ?? "");
+  const target = readTarget(form);
+  if (!target) return { error: "Thiếu bài tập hoặc module đích." };
   const ctx = await requireClassRole(classId, STAFF);
 
   const csv = String(form.get("csv") ?? "").trim();
@@ -98,8 +127,13 @@ export async function importQuestionsAction(
   }
   if (rows.length === 0) return { error: "Không tìm thấy dòng nào." };
 
-  const res = await importQuestions(ctx, assignmentId, rows);
-  revalidateAssignment(classId, assignmentId);
+  const res =
+    target.kind === "assignment"
+      ? await importQuestions(ctx, target.id, rows)
+      : await importExamQuestions(ctx, target.id, rows);
+
+  if (target.kind === "assignment") revalidateAssignment(classId, target.id);
+  else revalidatePath(`/teacher/classes/${classId}/exams`, "layout");
 
   if (res.errors.length > 0) {
     const first = res.errors.slice(0, 3).map((e) => `dòng ${e.line}: ${e.message}`).join(" · ");

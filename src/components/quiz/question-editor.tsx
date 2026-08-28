@@ -10,6 +10,7 @@ import { SubmitButton } from "@/components/ui/submit-button";
 import { Alert } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils/cn";
+import { FilePicker, type Uploaded } from "@/components/class/file-picker";
 import {
   addQuestionAction,
   deleteQuestionAction,
@@ -22,6 +23,7 @@ export type EditorQuestion = {
   id: string;
   orderIndex: number;
   prompt: string;
+  imageR2Key: string | null;
   type: QType;
   choices: { key: string; text: string }[] | null;
   correctAnswer: string | null;
@@ -43,11 +45,17 @@ const KEYS = ["A", "B", "C", "D"] as const;
 export function QuestionEditor({
   classId,
   assignmentId,
+  moduleId,
   questions,
+  hint,
 }: {
   classId: string;
-  assignmentId: string;
+  /** Dùng cho bài tập */
+  assignmentId?: string;
+  /** Dùng cho module đề thi */
+  moduleId?: string;
   questions: EditorQuestion[];
+  hint?: string;
 }) {
   const [showImport, setShowImport] = useState(false);
   const total = questions.reduce((s, q) => s + q.points, 0);
@@ -59,7 +67,8 @@ export function QuestionEditor({
           <div>
             <CardTitle>Câu hỏi</CardTitle>
             <CardDescription>
-              {questions.length} câu · tổng {total} điểm. Máy chấm ngay khi học sinh nộp.
+              {questions.length} câu · tổng {total} điểm.{" "}
+              {hint ?? "Máy chấm ngay khi học sinh nộp."}
             </CardDescription>
           </div>
           <Button variant="secondary" size="sm" onClick={() => setShowImport((v) => !v)}>
@@ -67,7 +76,9 @@ export function QuestionEditor({
           </Button>
         </CardHeader>
 
-        {showImport && <ImportForm classId={classId} assignmentId={assignmentId} />}
+        {showImport && (
+          <ImportForm classId={classId} assignmentId={assignmentId} moduleId={moduleId} />
+        )}
       </Card>
 
       {questions.map((q) => (
@@ -81,11 +92,20 @@ export function QuestionEditor({
                 {q.domain && <Badge tone="info">{q.domain}</Badge>}
               </div>
               <p className="whitespace-pre-wrap text-body">{q.prompt}</p>
+              {q.imageR2Key && (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img
+                  src={`/api/question-image?key=${encodeURIComponent(q.imageR2Key)}`}
+                  alt="Hình của câu hỏi"
+                  className="mt-3 max-h-[280px] rounded-[var(--radius-md)] border border-line"
+                />
+              )}
             </div>
 
             <form action={deleteQuestionAction}>
               <input type="hidden" name="classId" value={classId} />
-              <input type="hidden" name="assignmentId" value={assignmentId} />
+              <input type="hidden" name="assignmentId" value={assignmentId ?? ""} />
+              <input type="hidden" name="moduleId" value={moduleId ?? ""} />
               <input type="hidden" name="questionId" value={q.id} />
               <button
                 type="submit"
@@ -144,14 +164,24 @@ export function QuestionEditor({
         </Card>
       ))}
 
-      <AddQuestionForm classId={classId} assignmentId={assignmentId} />
+      <AddQuestionForm classId={classId} assignmentId={assignmentId} moduleId={moduleId} />
     </div>
   );
 }
 
-function AddQuestionForm({ classId, assignmentId }: { classId: string; assignmentId: string }) {
+function AddQuestionForm({
+  classId,
+  assignmentId,
+  moduleId,
+}: {
+  classId: string;
+  assignmentId?: string;
+  moduleId?: string;
+}) {
   const formRef = useRef<HTMLFormElement>(null);
   const [type, setType] = useState<QType>("mcq");
+  const [image, setImage] = useState<Uploaded[]>([]);
+  const [busy, setBusy] = useState(false);
   const [state, action] = useActionState(addQuestionAction, null);
 
   return (
@@ -163,13 +193,16 @@ function AddQuestionForm({ classId, assignmentId }: { classId: string; assignmen
       <form
         ref={formRef}
         action={async (fd) => {
+          fd.set("imageR2Key", image[0]?.r2Key ?? "");
           await action(fd);
           formRef.current?.reset();
+          setImage([]);
         }}
         className="space-y-4"
       >
         <input type="hidden" name="classId" value={classId} />
-        <input type="hidden" name="assignmentId" value={assignmentId} />
+        <input type="hidden" name="assignmentId" value={assignmentId ?? ""} />
+        <input type="hidden" name="moduleId" value={moduleId ?? ""} />
         <input type="hidden" name="type" value={type} />
 
         <div className="flex flex-wrap gap-2">
@@ -191,6 +224,20 @@ function AddQuestionForm({ classId, assignmentId }: { classId: string; assignmen
         <Field label="Đề bài">
           <Textarea name="prompt" rows={3} required maxLength={5000} placeholder="Nội dung câu hỏi..." />
         </Field>
+
+        {/* Đề Math nhiều biểu đồ, đề RW có đoạn văn chụp lại — không có ảnh
+            thì không nhập được đề thật. Mỗi câu tối đa một ảnh. */}
+        <div>
+          <span className="mb-1.5 block text-[13px] font-semibold text-ink">Hình của câu hỏi</span>
+          <FilePicker
+            classId={classId}
+            kind="question"
+            files={image}
+            onChange={(f) => setImage(f.slice(-1))}
+            onBusyChange={setBusy}
+            label={image.length ? "Đổi hình" : "Đính kèm hình"}
+          />
+        </div>
 
         {type === "mcq" && (
           <fieldset className="space-y-2">
@@ -252,7 +299,7 @@ function AddQuestionForm({ classId, assignmentId }: { classId: string; assignmen
         {state?.ok && <Alert tone="success">{state.ok}</Alert>}
 
         <div className="flex justify-end">
-          <SubmitButton size="sm" pendingText="Đang thêm...">
+          <SubmitButton size="sm" disabled={busy} pendingText="Đang thêm...">
             <Plus /> Thêm câu hỏi
           </SubmitButton>
         </div>
@@ -261,13 +308,22 @@ function AddQuestionForm({ classId, assignmentId }: { classId: string; assignmen
   );
 }
 
-function ImportForm({ classId, assignmentId }: { classId: string; assignmentId: string }) {
+function ImportForm({
+  classId,
+  assignmentId,
+  moduleId,
+}: {
+  classId: string;
+  assignmentId?: string;
+  moduleId?: string;
+}) {
   const [state, action] = useActionState(importQuestionsAction, null);
 
   return (
     <form action={action} className="mt-4 space-y-3 border-t border-line pt-4">
       <input type="hidden" name="classId" value={classId} />
-      <input type="hidden" name="assignmentId" value={assignmentId} />
+      <input type="hidden" name="assignmentId" value={assignmentId ?? ""} />
+      <input type="hidden" name="moduleId" value={moduleId ?? ""} />
 
       <Field
         label="Dán CSV"

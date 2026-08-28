@@ -1,6 +1,15 @@
 import "server-only";
 import { and, asc, eq, inArray, sql } from "drizzle-orm";
-import { answers, assignments, classMembers, questions, submissions, user } from "@/db/schema";
+import {
+  answers,
+  assignments,
+  classMembers,
+  examModules,
+  exams,
+  questions,
+  submissions,
+  user,
+} from "@/db/schema";
 import type { ClassContext } from "@/lib/auth/guard";
 import { ForbiddenError, canGrade, canPost } from "@/lib/auth/policy";
 import { gradeAnswer } from "@/lib/grading/normalize";
@@ -515,4 +524,101 @@ export function summarizeByDomain(stats: QuestionStat[]) {
       const rb = b.answered ? b.correct / b.answered : 1;
       return ra - rb; // yếu nhất lên đầu
     });
+}
+
+
+/* --------------------- Câu hỏi thuộc module đề thi --------------------- */
+
+async function assertModuleInClass(ctx: ClassContext, moduleId: string) {
+  const [row] = await ctx.db
+    .select({ moduleId: examModules.id })
+    .from(examModules)
+    .innerJoin(exams, eq(exams.id, examModules.examId))
+    .where(and(eq(examModules.id, moduleId), eq(exams.classId, ctx.classId)));
+  if (!row) throw new ForbiddenError("Module không tồn tại trong lớp này.");
+}
+
+/** Giống createQuestion nhưng gắn vào module đề thi thay vì bài tập. */
+export async function createExamQuestion(
+  ctx: ClassContext,
+  moduleId: string,
+  input: QuestionInput,
+) {
+  if (!canPost(ctx.classRole)) throw new ForbiddenError();
+  await assertModuleInClass(ctx, moduleId);
+  validate(input);
+
+  const [{ n } = { n: 0 }] = await ctx.db
+    .select({ n: sql<number>`count(*)` })
+    .from(questions)
+    .where(eq(questions.examModuleId, moduleId));
+
+  const id = crypto.randomUUID();
+  await ctx.db.insert(questions).values({
+    id,
+    examModuleId: moduleId,
+    orderIndex: n,
+    prompt: input.prompt.trim(),
+    type: input.type,
+    choices: input.type === "mcq" ? (input.choices ?? []) : null,
+    correctAnswer: input.correctAnswer?.trim() || null,
+    acceptedAnswers: input.acceptedAnswers?.length ? input.acceptedAnswers : null,
+    explanation: input.explanation?.trim() || null,
+    points: input.points,
+    domain: input.domain?.trim() || null,
+    skillTag: input.skillTag?.trim() || null,
+    imageR2Key: input.imageR2Key ?? null,
+  });
+  return id;
+}
+
+export async function deleteExamQuestion(ctx: ClassContext, moduleId: string, questionId: string) {
+  if (!canPost(ctx.classRole)) throw new ForbiddenError();
+  await assertModuleInClass(ctx, moduleId);
+
+  const q = await ctx.db.query.questions.findFirst({
+    where: and(eq(questions.id, questionId), eq(questions.examModuleId, moduleId)),
+  });
+  if (!q) throw new ForbiddenError("Câu hỏi không tồn tại.");
+  await ctx.db.delete(questions).where(eq(questions.id, questionId));
+}
+
+/** Nhập đề module bằng CSV — 27 câu mỗi module không ai gõ tay nổi. */
+export async function importExamQuestions(
+  ctx: ClassContext,
+  moduleId: string,
+  rows: ImportRow[],
+): Promise<ImportResult> {
+  if (!canPost(ctx.classRole)) throw new ForbiddenError();
+  await assertModuleInClass(ctx, moduleId);
+
+  const errors: ImportResult["errors"] = [];
+  let created = 0;
+
+  for (const [i, row] of rows.entries()) {
+    try {
+      const type = row.type.trim().toLowerCase();
+      if (type !== "mcq" && type !== "grid_in" && type !== "free_text") {
+        throw new Error(`Loại câu "${row.type}" không hợp lệ (mcq / grid_in / free_text).`);
+      }
+      const choices = row.choices
+        .map((text, idx) => ({ key: String.fromCharCode(65 + idx), text: text.trim() }))
+        .filter((c) => c.text !== "");
+
+      await createExamQuestion(ctx, moduleId, {
+        type,
+        prompt: row.prompt,
+        choices: type === "mcq" ? choices : null,
+        correctAnswer: row.correct,
+        points: row.points ? Number(row.points) : 1,
+        domain: row.domain,
+        skillTag: row.skill,
+        explanation: row.explanation,
+      });
+      created++;
+    } catch (e) {
+      errors.push({ line: i + 1, message: e instanceof Error ? e.message : "Lỗi không rõ." });
+    }
+  }
+  return { created, errors };
 }

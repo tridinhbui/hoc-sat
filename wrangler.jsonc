@@ -46,9 +46,10 @@
     }
   ],
 
-  // P6: EXAM (1 DO / lượt thi) và ROOM (1 DO / lớp) sẽ khai báo ở đây.
-  // P7: MAIL_Q queue + cron nhắc deadline / đóng exam.
-  // "triggers": { "crons": ["0 * * * *", "*/5 * * * *"] },
+  // KHÔNG khai báo cron ở đây: worker do OpenNext sinh chỉ có handler
+  // `fetch`, không có `scheduled` — đặt cron vào sẽ là cấu hình chết.
+  // Lượt thi hết giờ được chốt theo kiểu lazy ngay khi có người đọc tới
+  // (giáo viên mở màn giám sát, học sinh vào lại). Xem PLAN.md §3.
 
   "vars": {
     "APP_NAME": "HocSAT",
