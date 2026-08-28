@@ -338,6 +338,11 @@ Gate xanh: `typecheck` · `lint` · `test` (9/9 phân quyền trên D1 thật) �
   chưa có nút dán ảnh. Cần trước khi nhập đề Math thật vì đề có nhiều biểu đồ.
 - Chấm tay câu tự luận hiện là một ô điểm cho cả bài, chưa chấm từng câu. Đủ dùng cho bài tập,
   nhưng đề thi có phần tự luận thì cần chấm theo câu.
+- `npm run typecheck` phải chạy `next typegen` trước `tsc`: `next dev` ghi `.next/dev/types` với
+  tập route THIẾU (chỉ những route đã compile lazily), làm typecheck ra kết quả khác nhau tuỳ
+  lúc đó dev server đã mở trang nào. Đã loại `.next/dev` khỏi tsconfig.
+- `opennextjs-cloudflare build` GHI ĐÈ script `build` trong package.json mỗi lần chạy. Vì vậy
+  `build` = `next build` (gate nhanh cho CI) và `build:cf` = pipeline OpenNext để deploy.
 
 ### P1 — Lớp học ✅ xong
 

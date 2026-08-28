@@ -40,6 +40,11 @@
   ],
   "exclude": [
     "node_modules",
-    ".open-next"
+    ".open-next",
+    // `next dev` sinh ra .next/dev/types với tập route THIẾU — nó chỉ biết
+    // những route đã compile lazily. Để lẫn vào đây thì typecheck ra kết quả
+    // khác nhau tuỳ lúc đó dev server đã mở trang nào.
+    // Nguồn sự thật là .next/types, do `next typegen` sinh (xem script typecheck).
+    ".next/dev"
   ]
 }
