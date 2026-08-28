@@ -11,6 +11,7 @@ export default defineConfig({
         compatibilityDate: "2026-08-01",
         compatibilityFlags: ["nodejs_compat"],
         d1Databases: ["DB"],
+        r2Buckets: ["FILES"],
         bindings: {
           TEST_MIGRATIONS: await readD1Migrations(
             path.join(import.meta.dirname, "drizzle"),
@@ -23,6 +24,10 @@ export default defineConfig({
     alias: {
       "@": path.join(import.meta.dirname, "src"),
       "server-only": path.join(import.meta.dirname, "tests/stubs/empty.ts"),
+      "@opennextjs/cloudflare": path.join(
+        import.meta.dirname,
+        "tests/stubs/opennext-cloudflare.ts",
+      ),
     },
   },
   test: {

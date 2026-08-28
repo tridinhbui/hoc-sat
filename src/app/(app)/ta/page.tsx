@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalendarCheck, ClipboardList } from "lucide-react";
 import { requireRole } from "@/lib/auth/guard";
 import { listMyClasses } from "@/lib/repo/classes";
+import { countUngradedByClass } from "@/lib/repo/assignments";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge, SubjectBadge } from "@/components/ui/badge";
@@ -10,7 +11,11 @@ import { Cu } from "@/components/mascot/cu";
 
 export default async function TaHome() {
   const ctx = await requireRole("ta", "admin");
-  const classes = (await listMyClasses(ctx)).filter((c) => c.classRole === "ta");
+  const [allClasses, ungradedByClass] = await Promise.all([
+    listMyClasses(ctx),
+    countUngradedByClass(ctx),
+  ]);
+  const classes = allClasses.filter((c) => c.classRole === "ta");
 
   return (
     <div className="space-y-6">
@@ -44,7 +49,10 @@ export default async function TaHome() {
                 </Link>
                 <Link href={`/ta/classes/${c.id}/assignments`}>
                   <Button size="sm" variant="secondary">
-                    <ClipboardList /> Chưa chấm <Badge tone="danger">—</Badge>
+                    <ClipboardList /> Chưa chấm{" "}
+                    <Badge tone={(ungradedByClass.get(c.id) ?? 0) > 0 ? "danger" : "neutral"}>
+                      {ungradedByClass.get(c.id) ?? 0}
+                    </Badge>
                   </Button>
                 </Link>
               </div>

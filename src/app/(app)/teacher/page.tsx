@@ -2,19 +2,23 @@ import Link from "next/link";
 import { BookOpen, ClipboardCheck, Clock, Users, Plus } from "lucide-react";
 import { requireRole } from "@/lib/auth/guard";
 import { countMyStudents, listMyClasses } from "@/lib/repo/classes";
+import { countDueSoon, countUngradedByClass } from "@/lib/repo/assignments";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatTile } from "@/components/ui/stat-tile";
 import { Button } from "@/components/ui/button";
-import { SubjectBadge } from "@/components/ui/badge";
+import { Badge, SubjectBadge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Cu } from "@/components/mascot/cu";
 
 export default async function TeacherHome() {
   const ctx = await requireRole("teacher", "admin");
-  const [classes, studentCount] = await Promise.all([
+  const [classes, studentCount, ungradedByClass, dueSoon] = await Promise.all([
     listMyClasses(ctx),
     countMyStudents(ctx),
+    countUngradedByClass(ctx),
+    countDueSoon(ctx),
   ]);
+  const ungraded = [...ungradedByClass.values()].reduce((a, b) => a + b, 0);
 
   return (
     <div className="space-y-6">
@@ -30,8 +34,8 @@ export default async function TeacherHome() {
 
       <div className="bento">
         <StatTile className="col-span-3" label="Lớp đang dạy" value={classes.length} icon={<BookOpen size={16} />} />
-        <StatTile className="col-span-3" label="Chưa chấm" value="—" hint="Có ở P2" tone="danger" icon={<ClipboardCheck size={16} />} />
-        <StatTile className="col-span-3" label="Sắp đến hạn" value="—" hint="Có ở P2" tone="accent" icon={<Clock size={16} />} />
+        <StatTile className="col-span-3" label="Chưa chấm" value={ungraded} tone="danger" icon={<ClipboardCheck size={16} />} />
+        <StatTile className="col-span-3" label="Sắp đến hạn" value={dueSoon} hint="7 ngày tới" tone="accent" icon={<Clock size={16} />} />
         <StatTile className="col-span-3" label="Học sinh" value={studentCount} tone="success" icon={<Users size={16} />} />
 
         <Card className="col-span-7">
@@ -64,8 +68,26 @@ export default async function TeacherHome() {
         </Card>
 
         <Card className="col-span-5">
-          <CardHeader><CardTitle>Cần chấm gấp</CardTitle></CardHeader>
-          <p className="text-sm text-muted">Hàng chờ chấm bài sẽ xuất hiện ở đây từ giai đoạn P2.</p>
+          <CardHeader><CardTitle>Cần chấm</CardTitle></CardHeader>
+          {ungraded === 0 ? (
+            <p className="text-sm text-muted">Không còn bài nào chờ chấm. Nhẹ người 🎉</p>
+          ) : (
+            <ul className="space-y-2">
+              {classes
+                .filter((c) => (ungradedByClass.get(c.id) ?? 0) > 0)
+                .map((c) => (
+                  <li key={c.id}>
+                    <Link
+                      href={`/teacher/classes/${c.id}/assignments`}
+                      className="rise flex items-center justify-between gap-3 rounded-[var(--radius-md)] border border-line px-4 py-3"
+                    >
+                      <span className="min-w-0 truncate font-semibold text-ink">{c.name}</span>
+                      <Badge tone="danger">{ungradedByClass.get(c.id)} bài</Badge>
+                    </Link>
+                  </li>
+                ))}
+            </ul>
+          )}
         </Card>
 
         <Card className="col-span-12">

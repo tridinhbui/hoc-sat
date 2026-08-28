@@ -264,7 +264,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 |---|---|---|
 | **P0 — Nền móng** ✅ | `create-next-app` + `@opennextjs/cloudflare`, wrangler config + bindings, Drizzle + D1 migration đầy đủ + index, seed, **better-auth** (login, đổi mật khẩu, session), **module guard + test phân quyền**, design system + component base (xem `DESIGN.md`), layout theo role | **2 tuần** |
 | **P1 — Lớp học** ✅ | Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, thông báo, tài liệu + upload R2 (presigned URL) | 1 tuần |
-| **P2 — Bài tập & chấm** | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
+| **P2 — Bài tập & chấm** ✅ | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
 | **P3 — Quiz & auto-chấm** | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
 | **P4 — Điểm danh & TA** | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
 | **P5 — Calendar** | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
@@ -366,9 +366,37 @@ học sinh vào lớp bằng mã và tải được file → TA thấy đúng 3 
 4. **Học sinh không thấy mã lớp.** Chỉ giáo viên và TA cần đọc mã cho người mới.
 5. **TA không gán được cho tài khoản học sinh** — vai trò trong lớp không được vượt vai trò hệ thống.
 
-### Tiếp theo — P2: Bài tập & chấm
+### P2 — Bài tập & chấm ✅ xong
 
-Tạo bài tập (draft/publish, hạn nộp, đính kèm), học sinh nộp file, bảng theo dõi nộp bài,
-chấm điểm + feedback + **Return**, học sinh xem điểm.
+Đã chạy trọn vòng: giáo viên giao bài có hạn nộp → học sinh thấy ở "Việc cần làm" và nộp file →
+giáo viên chấm 18/20 kèm nhận xét rồi bấm trả → học sinh thấy điểm và nhận xét ở tab Điểm.
+
+| Hạng mục | Nơi |
+|---|---|
+| Repo bài tập, nộp bài, chấm, trả | `src/lib/repo/assignments.ts` |
+| Giao bài (nháp / giao ngay, hạn nộp, đính kèm) | `src/components/class/assignment-form.tsx` |
+| Bảng theo dõi + chấm + trả bài | `src/components/class/submission-table.tsx` |
+| Học sinh nộp / nộp lại / huỷ nộp | `src/components/class/submit-panel.tsx` |
+| Bảng điểm học sinh | `src/app/(app)/student/classes/[id]/grades/` |
+| Dashboard nối số thật (chưa chấm, sắp đến hạn, việc cần làm) | 3 trang dashboard |
+| Test (16 case) | `tests/assignment-permissions.test.ts` |
+
+**Quyết định đáng ghi lại:**
+
+1. **Bài nháp là ranh giới bảo mật, không phải chuyện hiển thị.** `published_at IS NULL` thì học sinh
+   không mở được dù biết id — lọc ngay trong repo chứ không ẩn ở UI.
+2. **Điểm chỉ lộ ra khi bấm Trả bài.** Giáo viên chấm xong vẫn giữ kín cho tới lúc trả, nên có thể
+   chấm cả lớp rồi trả một lượt. `listAssignments` trả `myGrade: null` khi chưa `returned`.
+3. **Bảng theo dõi bắt đầu từ roster, không từ bảng submissions.** Học sinh chưa nộp thì chưa có dòng
+   nào, mà giáo viên cần thấy đủ cả lớp — nên LEFT JOIN từ `class_members`.
+4. **Đã có người nộp thì không rút bài về nháp.** Rút về sẽ làm học sinh mất chỗ xem bài đã nộp.
+5. **`kind` của upload chuyển sang query param.** Cần biết loại file để chọn guard, mà kiểm quyền phải
+   xong TRƯỚC khi bỏ công parse một body 25MB.
+6. **Luật "quá hạn" tính ở repo, không ở component.** Rule `react-hooks/purity` bắt đúng: render phải
+   thuần, và luật nghiệp vụ vốn không thuộc về tầng hiển thị.
+
+### Tiếp theo — P3: Quiz & auto-chấm
+
+Trình soạn câu hỏi (MCQ / grid-in / tự luận), import CSV/JSON, engine auto-chấm, dashboard câu sai.
 
 Design chi tiết: xem `DESIGN.md`.
