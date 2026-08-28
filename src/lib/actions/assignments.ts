@@ -16,6 +16,7 @@ import {
   updateAssignment,
 } from "@/lib/repo/assignments";
 import type { UploadedFile } from "@/lib/repo/materials";
+import { notifyGradeReturned, notifyNewAssignment } from "@/lib/email/notify";
 import type { ActionState } from "./classes";
 
 function revalidateClass(classId: string, ...tabs: string[]) {
@@ -77,6 +78,9 @@ export async function createAssignmentAction(
     return { error: e instanceof Error ? e.message : "Không tạo được bài tập." };
   }
 
+  // Giao bài ngay thì báo cả lớp. Lưu nháp thì không — chưa ai cần biết.
+  if (form.get("intent") === "publish") await notifyNewAssignment(ctx, id);
+
   revalidateClass(classId, "assignments");
   redirect(`/${ctx.classRole === "ta" ? "ta" : "teacher"}/classes/${classId}/assignments/${id}`);
 }
@@ -111,15 +115,17 @@ export async function setPublishedAction(
   const classId = String(form.get("classId") ?? "");
   const ctx = await requireClassRole(classId, STAFF);
 
+  const publish = form.get("publish") === "true";
+  const assignmentId = String(form.get("assignmentId") ?? "");
+
   try {
-    await setPublished(
-      ctx,
-      String(form.get("assignmentId") ?? ""),
-      form.get("publish") === "true",
-    );
+    await setPublished(ctx, assignmentId, publish);
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Không đổi được trạng thái." };
   }
+
+  // Chỉ báo khi chuyển từ nháp sang đã giao; rút về nháp thì im lặng.
+  if (publish) await notifyNewAssignment(ctx, assignmentId);
 
   revalidateClass(classId, "assignments");
   return { ok: form.get("publish") === "true" ? "Đã giao cho lớp." : "Đã rút về nháp." };
@@ -181,7 +187,9 @@ export async function gradeAction(_prev: ActionState, form: FormData): Promise<A
     });
     // Chấm và trả trong một lần bấm nếu giáo viên chọn vậy.
     if (form.get("intent") === "grade_and_return") {
-      await returnSubmission(ctx, String(form.get("submissionId") ?? ""));
+      const submissionId = String(form.get("submissionId") ?? "");
+      await returnSubmission(ctx, submissionId);
+      await notifyGradeReturned(ctx, [submissionId]);
     }
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Không lưu được điểm." };
@@ -195,15 +203,17 @@ export async function returnAllAction(_prev: ActionState, form: FormData): Promi
   const classId = String(form.get("classId") ?? "");
   const ctx = await requireClassRole(classId, STAFF);
 
-  let n = 0;
+  let ids: string[] = [];
   try {
-    n = await returnAllGraded(ctx, String(form.get("assignmentId") ?? ""));
+    ids = await returnAllGraded(ctx, String(form.get("assignmentId") ?? ""));
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Không trả bài được." };
   }
 
+  await notifyGradeReturned(ctx, ids);
+
   revalidateClass(classId, "assignments", "grades");
-  return n === 0
+  return ids.length === 0
     ? { error: "Chưa có bài nào đã chấm để trả." }
-    : { ok: `Đã trả ${n} bài.` };
+    : { ok: `Đã trả ${ids.length} bài.` };
 }

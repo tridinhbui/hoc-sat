@@ -26,6 +26,11 @@ jobs:
 
       # Quan trọng nhất: D1 không có RLS, bộ test này là hàng rào duy nhất
       # còn lại. PR nào làm đỏ nó thì không được merge.
+      # Soát bằng máy: action hay route mới mà quên guard thì đỏ ngay,
+      # không chờ ai đọc code phát hiện.
+      - name: Audit hàng rào phân quyền
+        run: npm run audit
+
       - name: Test phân quyền
         run: npm test
 

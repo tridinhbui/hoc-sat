@@ -19,7 +19,8 @@
     "db:studio": "drizzle-kit studio",
     "test": "vitest run",
     "test:watch": "vitest",
-    "build:cf": "opennextjs-cloudflare build"
+    "build:cf": "opennextjs-cloudflare build",
+    "audit": "node scripts/audit-guards.mjs"
   },
   "dependencies": {
     "better-auth": "^1.7.2",

@@ -522,14 +522,17 @@ export async function returnSubmission(ctx: ClassContext, submissionId: string) 
     .where(eq(submissions.id, submissionId));
 }
 
-/** Trả cả lượt cho những bài đã chấm — tránh bấm 30 lần. */
+/**
+ * Trả cả lượt cho những bài đã chấm — tránh bấm 30 lần.
+ * Trả về danh sách id vừa trả, để tầng trên biết cần gửi email cho ai.
+ */
 export async function returnAllGraded(ctx: ClassContext, assignmentId: string) {
   assertStaff(ctx);
   await getAssignment(ctx, assignmentId);
 
-  const res = await ctx.db
-    .update(submissions)
-    .set({ status: "returned", returnedAt: new Date() })
+  const pending = await ctx.db
+    .select({ id: submissions.id })
+    .from(submissions)
     .where(
       and(
         eq(submissions.assignmentId, assignmentId),
@@ -537,7 +540,15 @@ export async function returnAllGraded(ctx: ClassContext, assignmentId: string) {
         isNotNull(submissions.finalGrade),
       ),
     );
-  return res.meta.changes ?? 0;
+  if (pending.length === 0) return [] as string[];
+
+  const ids = pending.map((p) => p.id);
+  await ctx.db
+    .update(submissions)
+    .set({ status: "returned", returnedAt: new Date() })
+    .where(inArray(submissions.id, ids));
+
+  return ids;
 }
 
 /* --------------------------- Bảng điểm học sinh --------------------------- */
