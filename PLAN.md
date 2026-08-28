@@ -267,7 +267,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 | **P2 — Bài tập & chấm** ✅ | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
 | **P3 — Quiz & auto-chấm** ✅ | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
 | **P4 — Điểm danh & TA** ✅ | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
-| **P5 — Calendar** | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
+| **P5 — Calendar** ✅ | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
 | **P6 — Thi & Lockdown** | Tạo đề nhiều module (preset Math 35/22, RW 32/27), **Durable Object phòng thi** (timer, autosave, alarm, WebSocket), lockdown client, proctor log, màn giám sát realtime, auto-submit qua cron, bảng điểm thi | **2.5 tuần** |
 | **P7 — Email & hoàn thiện** | Resend + React Email qua Queue: tài khoản mới, bài tập mới, bài được trả, nhắc deadline (cron); thông báo in-app qua `ROOM` DO; responsive; audit lại guard; custom domain + deploy production | 1 tuần |
 
