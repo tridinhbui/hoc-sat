@@ -263,7 +263,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 | GĐ | Nội dung | Ước lượng |
 |---|---|---|
 | **P0 — Nền móng** ✅ | `create-next-app` + `@opennextjs/cloudflare`, wrangler config + bindings, Drizzle + D1 migration đầy đủ + index, seed, **better-auth** (login, đổi mật khẩu, session), **module guard + test phân quyền**, design system + component base (xem `DESIGN.md`), layout theo role | **2 tuần** |
-| **P1 — Lớp học** | Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, thông báo, tài liệu + upload R2 (presigned URL) | 1 tuần |
+| **P1 — Lớp học** ✅ | Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, thông báo, tài liệu + upload R2 (presigned URL) | 1 tuần |
 | **P2 — Bài tập & chấm** | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
 | **P3 — Quiz & auto-chấm** | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
 | **P4 — Điểm danh & TA** | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
@@ -331,10 +331,44 @@ Gate xanh: `typecheck` · `lint` · `test` (9/9 phân quyền trên D1 thật) �
 - `npm audit`: 4 cảnh báo moderate từ `esbuild` cũ, đi kèm `drizzle-kit` (dev-only, không vào bundle
   production). Hạ `drizzle-kit` xuống 0.18 để dứt điểm thì mất tính năng — chờ drizzle-kit cập nhật.
 - `wrangler.jsonc` còn placeholder cho `database_id` và KV `id` — điền sau khi tạo resource thật.
-- Chưa có CI. Cần một workflow chạy `typecheck` + `lint` + `test` trước khi mở P1.
+- Upload đi qua Worker nên chặn ở 25MB. File lớn hơn (đề scan nhiều trang) cần presigned URL
+  thẳng lên R2 — phải làm trước khi học sinh nộp bài chụp ảnh ở P2.
+- Chưa dọn file mồ côi trong R2 khi xoá lớp. Cần một cron quét theo prefix `class/{id}/`.
 
-### Tiếp theo — P1: Lớp học
+### P1 — Lớp học ✅ xong
 
-Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, tab thông báo, tài liệu + upload R2.
+Đã chạy được: tạo lớp (chọn môn trước) → sinh mã → giáo viên đăng thông báo và tài liệu →
+học sinh vào lớp bằng mã và tải được file → TA thấy đúng 3 tab, bị chặn khỏi roster.
+
+| Hạng mục | Nơi |
+|---|---|
+| Wizard tạo lớp (chọn RW/Math trước) | `src/app/(app)/teacher/classes/new/wizard.tsx` |
+| Vào lớp bằng mã | `src/app/(app)/student/join/` |
+| Roster + thêm/gỡ thành viên (teacher-only) | `src/app/(app)/teacher/classes/[id]/people/` |
+| Cài đặt lớp + đổi mã lớp | `src/app/(app)/teacher/classes/[id]/settings/` |
+| Thông báo (đăng, ghim, xoá) | `src/lib/repo/announcements.ts` |
+| Tài liệu + upload R2 | `src/lib/repo/materials.ts`, `src/lib/storage/r2.ts` |
+| Upload / download có kiểm quyền | `src/app/api/classes/[classId]/upload/`, `src/app/api/attachments/[id]/` |
+| Test luật nội dung (14 case) | `tests/content-permissions.test.ts` |
+| CI | `.github/workflows/ci.yml` |
+
+**Quyết định đáng ghi lại:**
+
+1. **File không đi qua server action.** Server action có giới hạn body nhỏ, nên upload đi qua
+   route handler riêng, trả về mô tả file, form chỉ gửi lại `r2Key`. Đổi lại phải kiểm rằng
+   `r2Key` thuộc đúng lớp đang thao tác — nếu không, ai cũng gắn được file lớp khác vào lớp mình.
+   Đã có test cho đúng trường hợp này.
+2. **Bucket R2 không public.** Mọi đường tải đi qua `/api/attachments/[id]`, quyền kiểm lại theo
+   `classId` nhúng trong key. Response ép `Content-Disposition: attachment` + CSP sandbox để
+   file HTML/SVG người dùng up không chạy script trên origin của app.
+3. **Xoá D1 trước, xoá R2 sau.** Ngược lại sẽ có bản ghi trỏ vào file không tồn tại; theo thứ tự này
+   thì tệ nhất chỉ còn file mồ côi trong bucket.
+4. **Học sinh không thấy mã lớp.** Chỉ giáo viên và TA cần đọc mã cho người mới.
+5. **TA không gán được cho tài khoản học sinh** — vai trò trong lớp không được vượt vai trò hệ thống.
+
+### Tiếp theo — P2: Bài tập & chấm
+
+Tạo bài tập (draft/publish, hạn nộp, đính kèm), học sinh nộp file, bảng theo dõi nộp bài,
+chấm điểm + feedback + **Return**, học sinh xem điểm.
 
 Design chi tiết: xem `DESIGN.md`.

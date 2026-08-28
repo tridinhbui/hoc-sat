@@ -20,7 +20,10 @@ export default defineConfig({
     })),
   ],
   resolve: {
-    alias: { "@": path.join(import.meta.dirname, "src") },
+    alias: {
+      "@": path.join(import.meta.dirname, "src"),
+      "server-only": path.join(import.meta.dirname, "tests/stubs/empty.ts"),
+    },
   },
   test: {
     setupFiles: ["./tests/setup.ts"],

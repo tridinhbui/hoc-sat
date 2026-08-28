@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BookOpen, ClipboardCheck, Clock, Users, Plus } from "lucide-react";
 import { requireRole } from "@/lib/auth/guard";
-import { listMyClasses } from "@/lib/repo/classes";
+import { countMyStudents, listMyClasses } from "@/lib/repo/classes";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { StatTile } from "@/components/ui/stat-tile";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,10 @@ import { Cu } from "@/components/mascot/cu";
 
 export default async function TeacherHome() {
   const ctx = await requireRole("teacher", "admin");
-  const classes = await listMyClasses(ctx);
+  const [classes, studentCount] = await Promise.all([
+    listMyClasses(ctx),
+    countMyStudents(ctx),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -29,7 +32,7 @@ export default async function TeacherHome() {
         <StatTile className="col-span-3" label="Lớp đang dạy" value={classes.length} icon={<BookOpen size={16} />} />
         <StatTile className="col-span-3" label="Chưa chấm" value="—" hint="Có ở P2" tone="danger" icon={<ClipboardCheck size={16} />} />
         <StatTile className="col-span-3" label="Sắp đến hạn" value="—" hint="Có ở P2" tone="accent" icon={<Clock size={16} />} />
-        <StatTile className="col-span-3" label="Học sinh" value="—" hint="Có ở P1" tone="success" icon={<Users size={16} />} />
+        <StatTile className="col-span-3" label="Học sinh" value={studentCount} tone="success" icon={<Users size={16} />} />
 
         <Card className="col-span-7">
           <CardHeader><CardTitle>Lớp của tôi</CardTitle></CardHeader>
