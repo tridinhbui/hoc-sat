@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { CalendarDays, GraduationCap, Home, Users, LogOut, Flame } from "lucide-react";
+import { CalendarDays, GraduationCap, Home, Users, Flame } from "lucide-react";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { SignOutButton } from "@/components/sign-out-button";
 import type { SessionUser } from "@/lib/auth/guard";
 
 const NAV: Record<string, { href: string; label: string; icon: typeof Home }[]> = {
@@ -83,27 +84,25 @@ export function AppShell({
             </div>
           </div>
 
-          <form action="/api/auth/sign-out" method="post">
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 rounded-full px-3.5 py-2.5 text-sm font-semibold text-muted transition-colors hover:bg-danger-soft hover:text-[#b32340]"
-            >
-              <LogOut size={18} />
-              Đăng xuất
-            </button>
-          </form>
+          <SignOutButton />
         </div>
       </aside>
 
-      {/* Thanh trên — mobile */}
+      {/* Thanh trên — mobile.
+          Đăng xuất phải nằm ở đây: sidebar (chỗ duy nhất còn lại có nút này)
+          bị ẩn dưới md, nên trên điện thoại không có đường nào thoát ra. */}
       <header className="flex items-center justify-between border-b border-line bg-surface px-5 py-3 md:hidden">
         <Link href="/dashboard" className="font-display text-lg font-extrabold text-ink">
           HocSAT
         </Link>
-        <Avatar name={user.name} size={32} />
+        <div className="flex items-center gap-2">
+          <Avatar name={user.name} size={32} />
+          <SignOutButton variant="icon" />
+        </div>
       </header>
 
-      <main className="min-w-0 flex-1 px-5 py-6 md:px-8 md:py-8">
+      {/* pb-24 chừa chỗ cho tab bar fixed — nếu không, thẻ cuối trang bị che. */}
+      <main className="min-w-0 flex-1 px-5 pb-24 pt-6 md:px-8 md:py-8 md:pb-8">
         <div className="fade-up mx-auto max-w-[1180px]">{children}</div>
       </main>
 
