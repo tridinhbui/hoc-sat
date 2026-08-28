@@ -23,6 +23,7 @@ export default async function TaClassLayout({
           { href: `${base}/stream`, label: "Thông báo" },
           { href: `${base}/assignments`, label: "Bài tập" },
           { href: `${base}/attendance`, label: "Điểm danh" },
+          { href: `${base}/reports`, label: "Báo cáo" },
         ]}
       />
       {children}

@@ -24,6 +24,7 @@ export default async function TeacherClassLayout({
           { href: `${base}/materials`, label: "Tài liệu" },
           { href: `${base}/exams`, label: "Đề thi" },
           { href: `${base}/attendance`, label: "Điểm danh" },
+          { href: `${base}/reports`, label: "Báo cáo" },
           { href: `${base}/people`, label: "Học sinh" },
           { href: `${base}/settings`, label: "Cài đặt" },
         ]}
