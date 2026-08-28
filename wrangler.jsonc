@@ -1,0 +1,52 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "hocsat",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+
+  "observability": { "enabled": true },
+
+  // D1 — toàn bộ dữ liệu quan hệ.
+  // Tạo bằng: npx wrangler d1 create hocsat-db  → dán database_id vào đây.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "hocsat-db",
+      "database_id": "PLACEHOLDER_CHAY_wrangler_d1_create",
+      "migrations_dir": "drizzle"
+    }
+  ],
+
+  // R2 — materials/ · submissions/ · questions/
+  // Tạo bằng: npx wrangler r2 bucket create hocsat-files
+  "r2_buckets": [
+    {
+      "binding": "FILES",
+      "bucket_name": "hocsat-files"
+    }
+  ],
+
+  // KV — cache session, tra mã lớp, rate limit
+  // Tạo bằng: npx wrangler kv namespace create CACHE
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "PLACEHOLDER_CHAY_wrangler_kv_namespace_create"
+    }
+  ],
+
+  // P6: EXAM (1 DO / lượt thi) và ROOM (1 DO / lớp) sẽ khai báo ở đây.
+  // P7: MAIL_Q queue + cron nhắc deadline / đóng exam.
+  // "triggers": { "crons": ["0 * * * *", "*/5 * * * *"] },
+
+  "vars": {
+    "APP_NAME": "HocSAT",
+    "APP_TZ": "Asia/Ho_Chi_Minh"
+  }
+}

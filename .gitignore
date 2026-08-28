@@ -1,0 +1,15 @@
+node_modules/
+.next/
+.open-next/
+.wrangler/
+out/
+build/
+.env
+.env.local
+.dev.vars
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+
+# seed sinh ra, không commit (chứa hash mật khẩu dev)
+scripts/seed.sql

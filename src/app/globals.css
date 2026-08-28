@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/* ==================================================================
+   HocSAT design tokens — xem DESIGN.md
+   Modern SaaS + Soft UI + Bento + Pastel Minimalism + Gamification
+   ================================================================== */
+
+@theme {
+  /* Nền */
+  --color-bg: #f2f6ff;
+  --color-surface: #ffffff;
+  --color-sunken: #edf2ff;
+
+  /* Chữ */
+  --color-ink: #0f1b45;
+  --color-body: #3b4a72;
+  --color-muted: #7c89ad;
+
+  /* Brand — periwinkle */
+  --color-primary: #5b6cff;
+  --color-primary-hover: #4a5aeb;
+  --color-primary-soft: #e4e8ff;
+
+  /* Accent — gamification */
+  --color-accent: #ffb020;
+  --color-accent-warm: #ff8a3d;
+  --color-accent-soft: #fff4dc;
+
+  /* Trạng thái */
+  --color-success: #22c58b;
+  --color-success-soft: #ddf7ed;
+  --color-danger: #f0526b;
+  --color-danger-soft: #ffe4e8;
+  --color-info: #4cc3f0;
+  --color-info-soft: #e0f6fe;
+
+  /* Đường nét */
+  --color-line: #e2e8f8;
+  --color-line-strong: #cbd5f0;
+
+  /* Bo góc */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Bóng — ám xanh, không đen */
+  --shadow-soft-sm: 0 1px 2px rgba(15, 27, 69, 0.04);
+  --shadow-soft: 0 4px 16px rgba(60, 80, 180, 0.07);
+  --shadow-soft-md: 0 8px 28px rgba(60, 80, 180, 0.1);
+  --shadow-soft-lg: 0 16px 48px rgba(60, 80, 180, 0.13);
+
+  /* Font */
+  --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Motion */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.1875rem; }
+
+  /* Focus ring nhìn thấy rõ ở mọi control — không bao giờ outline:none trần */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.28);
+    border-radius: var(--radius-sm);
+  }
+
+  /* Số không nhảy layout khi đếm ngược / cộng điểm */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+
+  /* Bento grid — 12 cột, gap 20px, sập 1 cột trên mobile */
+  .bento {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+  }
+  @media (max-width: 900px) {
+    .bento { grid-template-columns: minmax(0, 1fr); }
+    .bento > * { grid-column: auto !important; }
+  }
+
+  .rise {
+    transition: transform 120ms var(--ease-soft), box-shadow 120ms var(--ease-soft);
+  }
+  .rise:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft-md);
+  }
+
+  .fade-up {
+    animation: fade-up 200ms var(--ease-soft) both;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* Tôn trọng người dùng tắt chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+  .rise:hover { transform: none; }
+}
+
+/* ==================================================================
+   Phòng thi lockdown — ngoại lệ có chủ đích của design system.
+   Tone trung tính, bỏ playful. Không mascot, không emoji, không confetti.
+   ================================================================== */
+.exam-mode {
+  background: #0f1b45;
+  color: #e8ecf8;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.exam-mode h1, .exam-mode h2, .exam-mode h3 { color: #ffffff; }

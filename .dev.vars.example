@@ -1,0 +1,5 @@
+# copy sang .dev.vars (đã gitignore) cho local dev
+BETTER_AUTH_SECRET="thay-bang-chuoi-ngau-nhien-32-ky-tu"
+BETTER_AUTH_URL=""  # dev: để trống, better-auth tự suy từ request. Production: set origin thật.
+RESEND_API_KEY="re_xxx"
+MAIL_FROM="HocSAT <no-reply@yourdomain.vn>"
