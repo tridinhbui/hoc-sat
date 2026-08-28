@@ -474,8 +474,17 @@ dashboard TA nói đúng lớp nào hôm nay chưa điểm danh.
 Bốn phase xong nhưng **chưa deploy lần nào** và **chưa có cách tạo tài khoản ngoài seed**.
 Càng thêm phase thì lần deploy đầu càng khó gỡ.
 
-1. **Deploy staging thật** — `wrangler.jsonc` còn placeholder `database_id` và KV `id`.
-   Tạo D1/KV/R2 thật, `db:migrate:remote`, deploy, đăng nhập bằng tài khoản thật.
+1. **Deploy staging thật** — 🟡 hạ tầng xong, còn bước `npm run deploy`.
+   D1 `hocsat-db` (APAC), KV `CACHE`, R2 `hocsat-files` đã tạo; id đã điền vào
+   `wrangler.jsonc`; migration `0000_init` đã chạy trên D1 thật (24 bảng);
+   `BETTER_AUTH_SECRET` đã đặt bằng `wrangler secret put`.
+   Còn lại: chạy `npm run deploy`, rồi đặt `BETTER_AUTH_URL` bằng origin thật
+   (better-auth cảnh báo baseURL trống thì callback/redirect có thể sai).
+
+   **Vùng đặt dữ liệu:** D1 phải tạo với `--location apac`. Mặc định Cloudflare
+   đặt ENAM, mỗi truy vấn từ Việt Nam vòng qua Bắc Mỹ — lần đầu đã dính đúng lỗi
+   này và phải xoá tạo lại. Với R2 thì `--location` chỉ là gợi ý: bucket đã xin
+   apac nhưng vẫn nằm ở ENAM, không có cờ nào ép được.
 2. **`/admin/users`** — tạo tài khoản + import CSV + reset mật khẩu. Role `admin` đã có từ P0,
    chỉ thiếu UI. Auth cấm tự đăng ký nên hiện không có đường nào tạo người dùng.
 3. **`/forgot-password`** — Resend nằm ở P7; trước mắt admin reset là đủ.
