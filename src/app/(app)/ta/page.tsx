@@ -3,6 +3,7 @@ import { CalendarCheck, ClipboardList } from "lucide-react";
 import { requireRole } from "@/lib/auth/guard";
 import { listMyClasses } from "@/lib/repo/classes";
 import { countUngradedByClass } from "@/lib/repo/assignments";
+import { markedTodayByClass } from "@/lib/repo/attendance";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge, SubjectBadge } from "@/components/ui/badge";
@@ -11,9 +12,10 @@ import { Cu } from "@/components/mascot/cu";
 
 export default async function TaHome() {
   const ctx = await requireRole("ta", "admin");
-  const [allClasses, ungradedByClass] = await Promise.all([
+  const [allClasses, ungradedByClass, markedToday] = await Promise.all([
     listMyClasses(ctx),
     countUngradedByClass(ctx),
+    markedTodayByClass(ctx),
   ]);
   const classes = allClasses.filter((c) => c.classRole === "ta");
 
@@ -45,7 +47,11 @@ export default async function TaHome() {
               </div>
               <div className="flex flex-wrap gap-2">
                 <Link href={`/ta/classes/${c.id}/attendance`}>
-                  <Button size="sm"><CalendarCheck /> Điểm danh hôm nay</Button>
+                  {/* Nút nói rõ còn phải làm hay đã xong, chứ không chỉ là một cái nút */}
+                  <Button size="sm" variant={markedToday.has(c.id) ? "secondary" : "primary"}>
+                    <CalendarCheck />
+                    {markedToday.has(c.id) ? "Đã điểm danh hôm nay" : "Điểm danh hôm nay"}
+                  </Button>
                 </Link>
                 <Link href={`/ta/classes/${c.id}/assignments`}>
                   <Button size="sm" variant="secondary">

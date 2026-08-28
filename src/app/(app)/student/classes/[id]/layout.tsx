@@ -24,6 +24,7 @@ export default async function StudentClassLayout({
           { href: `${base}/assignments`, label: "Bài tập" },
           { href: `${base}/materials`, label: "Tài liệu" },
           { href: `${base}/grades`, label: "Điểm" },
+          { href: `${base}/attendance`, label: "Chuyên cần" },
         ]}
       />
       {children}

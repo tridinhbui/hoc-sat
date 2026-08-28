@@ -266,7 +266,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 | **P1 — Lớp học** ✅ | Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, thông báo, tài liệu + upload R2 (presigned URL) | 1 tuần |
 | **P2 — Bài tập & chấm** ✅ | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
 | **P3 — Quiz & auto-chấm** ✅ | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
-| **P4 — Điểm danh & TA** | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
+| **P4 — Điểm danh & TA** ✅ | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
 | **P5 — Calendar** | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
 | **P6 — Thi & Lockdown** | Tạo đề nhiều module (preset Math 35/22, RW 32/27), **Durable Object phòng thi** (timer, autosave, alarm, WebSocket), lockdown client, proctor log, màn giám sát realtime, auto-submit qua cron, bảng điểm thi | **2.5 tuần** |
 | **P7 — Email & hoàn thiện** | Resend + React Email qua Queue: tài khoản mới, bài tập mới, bài được trả, nhắc deadline (cron); thông báo in-app qua `ROOM` DO; responsive; audit lại guard; custom domain + deploy production | 1 tuần |
@@ -431,8 +431,55 @@ máy chấm 2/4 → giáo viên xem heatmap và bảng câu sai nhiều nhất.
    = máy chấm + giáo viên chấm tay, và trần điểm tay được trừ đi phần máy đã chấm.
 6. **Heatmap không chỉ dùng màu** — mỗi ô có icon ✓/✗ cho người mù màu (DESIGN.md §10).
 
-### Tiếp theo — P4: Điểm danh & dashboard TA
+### P4 — Điểm danh & dashboard TA ✅ xong
 
-Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, khoá đúng 3 tab của TA.
+Đã chạy trọn vòng: giáo viên mở buổi hôm nay → điểm danh cả lớp bằng 4 nút →
+mở lại buổi cũ sửa lại được → học sinh thấy tỉ lệ chuyên cần của mình →
+dashboard TA nói đúng lớp nào hôm nay chưa điểm danh.
+
+| Hạng mục | Nơi |
+|---|---|
+| Repo điểm danh, thống kê chuyên cần | `src/lib/repo/attendance.ts` |
+| Hằng số + kiểu dùng chung 2 phía | `src/lib/attendance/types.ts` |
+| Server action mở buổi / ghi / xoá | `src/lib/actions/attendance.ts` |
+| Bảng điểm danh một buổi | `src/components/attendance/session-sheet.tsx` |
+| Danh sách buổi + thống kê | `src/components/attendance/session-list.tsx`, `summary.tsx` |
+| Chuyên cần của học sinh | `src/components/attendance/my-attendance.tsx` |
+| Test (18 case) | `tests/attendance-permissions.test.ts` |
+
+**Quyết định đáng ghi lại:**
+
+1. **`STATUS_LABEL` phải ra khỏi repo.** Repo có `import "server-only"`; client component
+   lấy *type* từ đó thì không sao (type bị xoá lúc build), nhưng lấy một *giá trị* runtime
+   thì kéo cả drizzle + schema DB vào bundle client và **build gãy**. Quy ước từ nay:
+   giá trị dùng chung nằm ở `lib/<feature>/types.ts`, repo chỉ giữ hàm chạm DB.
+2. **`session_date` là text "YYYY-MM-DD" giờ VN, không phải timestamp.** Buổi học là khái
+   niệm theo ngày lịch; lưu timestamp rồi đổi múi giờ sẽ làm lớp buổi tối nhảy sang hôm trước.
+3. **Mở lại buổi cùng ngày trả về buổi cũ.** Không tạo bản ghi trùng, và đây cũng chính là
+   đường sửa lịch sử: mở buổi cũ, lưu lại, `onConflictDoUpdate` ghi đè.
+4. **Chỉ ghi điểm danh cho học sinh thật sự trong lớp.** `markSession` lọc theo roster trước
+   khi ghi — sửa `studentId` trong form không chèn được người ngoài. Có test riêng.
+5. **Xoá buổi là việc của giáo viên, TA thì không.** TA điểm danh hằng ngày nên dễ bấm nhầm,
+   mà xoá buổi là mất cả lịch sử của buổi đó.
+6. **Test được kiểm bằng đột biến.** Bỏ `canTakeAttendance` → 4 test đỏ; bỏ lọc `classId` khi
+   nạp buổi → 3 test đỏ. Bộ test xanh ngay từ đầu không chứng minh được gì nếu chưa thử phá.
+
+### Tiếp theo — P3.5: Vận hành được (chèn trước P5)
+
+Bốn phase xong nhưng **chưa deploy lần nào** và **chưa có cách tạo tài khoản ngoài seed**.
+Càng thêm phase thì lần deploy đầu càng khó gỡ.
+
+1. **Deploy staging thật** — `wrangler.jsonc` còn placeholder `database_id` và KV `id`.
+   Tạo D1/KV/R2 thật, `db:migrate:remote`, deploy, đăng nhập bằng tài khoản thật.
+2. **`/admin/users`** — tạo tài khoản + import CSV + reset mật khẩu. Role `admin` đã có từ P0,
+   chỉ thiếu UI. Auth cấm tự đăng ký nên hiện không có đường nào tạo người dùng.
+3. **`/forgot-password`** — Resend nằm ở P7; trước mắt admin reset là đủ.
+4. **Rate limit `/login`** — KV `CACHE` đã bind nhưng chưa dùng ở đâu. Login là endpoint duy
+   nhất chưa authenticated.
+5. ~~CI thiếu bước OpenNext build~~ ✅ đã thêm — `npm run build:cf`.
+
+Sau đó trả hai món nợ P0 đã quá hạn theo tiêu chí tự đặt: **presigned URL R2** (đáng lẽ trước
+P2) và **paste ảnh vào trình soạn đề** (đáng lẽ trước khi nhập đề Math thật). Rồi **spike
+Durable Object 1–2 ngày** trước khi lên lịch 2.5 tuần cho P6.
 
 Design chi tiết: xem `DESIGN.md`.

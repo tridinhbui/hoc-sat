@@ -29,5 +29,8 @@ jobs:
       - name: Test phân quyền
         run: npm test
 
-      - name: Build
-        run: npm run build
+      # `build:cf` chạy `next build` bên trong rồi mới bundle cho workerd,
+      # nên đây là gate duy nhất cần chạy. Next build xanh không có nghĩa là
+      # chạy được trên Workers — bundle cho workerd có ràng buộc riêng.
+      - name: Build cho Cloudflare Workers
+        run: npm run build:cf
