@@ -265,7 +265,7 @@ TA **không có** tab "Cài đặt lớp" và "Học sinh" — ẩn ở UI **và
 | **P0 — Nền móng** ✅ | `create-next-app` + `@opennextjs/cloudflare`, wrangler config + bindings, Drizzle + D1 migration đầy đủ + index, seed, **better-auth** (login, đổi mật khẩu, session), **module guard + test phân quyền**, design system + component base (xem `DESIGN.md`), layout theo role | **2 tuần** |
 | **P1 — Lớp học** ✅ | Tạo lớp (chọn RW/Math trước), sinh mã, join bằng mã, roster, thêm TA, thông báo, tài liệu + upload R2 (presigned URL) | 1 tuần |
 | **P2 — Bài tập & chấm** ✅ | Tạo bài tập (draft/publish, due, đính kèm), HS nộp file, bảng theo dõi nộp, chấm + feedback + **Return**, HS xem điểm | 1.5 tuần |
-| **P3 — Quiz & auto-chấm** | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
+| **P3 — Quiz & auto-chấm** ✅ | Trình soạn câu hỏi (MCQ / grid-in / tự luận, paste ảnh → R2), **import CSV/JSON đề**, UI làm bài, engine auto-chấm + normalize grid-in, **dashboard câu sai** | 2 tuần |
 | **P4 — Điểm danh & TA** | Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, dashboard TA + shortcut, khoá đúng 3 tab | 1 tuần |
 | **P5 — Calendar** | View tháng/tuần, feed hợp nhất, giáo viên CRUD, TA/HS read-only, lọc theo lớp | 0.5 tuần |
 | **P6 — Thi & Lockdown** | Tạo đề nhiều module (preset Math 35/22, RW 32/27), **Durable Object phòng thi** (timer, autosave, alarm, WebSocket), lockdown client, proctor log, màn giám sát realtime, auto-submit qua cron, bảng điểm thi | **2.5 tuần** |
@@ -334,6 +334,10 @@ Gate xanh: `typecheck` · `lint` · `test` (9/9 phân quyền trên D1 thật) �
 - Upload đi qua Worker nên chặn ở 25MB. File lớn hơn (đề scan nhiều trang) cần presigned URL
   thẳng lên R2 — phải làm trước khi học sinh nộp bài chụp ảnh ở P2.
 - Chưa dọn file mồ côi trong R2 khi xoá lớp. Cần một cron quét theo prefix `class/{id}/`.
+- Ảnh trong đề (`questions.image_r2_key`) đã có cột và đã hiển thị được, nhưng trình soạn đề
+  chưa có nút dán ảnh. Cần trước khi nhập đề Math thật vì đề có nhiều biểu đồ.
+- Chấm tay câu tự luận hiện là một ô điểm cho cả bài, chưa chấm từng câu. Đủ dùng cho bài tập,
+  nhưng đề thi có phần tự luận thì cần chấm theo câu.
 
 ### P1 — Lớp học ✅ xong
 
@@ -395,8 +399,40 @@ giáo viên chấm 18/20 kèm nhận xét rồi bấm trả → học sinh thấ
 6. **Luật "quá hạn" tính ở repo, không ở component.** Rule `react-hooks/purity` bắt đúng: render phải
    thuần, và luật nghiệp vụ vốn không thuộc về tầng hiển thị.
 
-### Tiếp theo — P3: Quiz & auto-chấm
+### P3 — Quiz & auto-chấm ✅ xong
 
-Trình soạn câu hỏi (MCQ / grid-in / tự luận), import CSV/JSON, engine auto-chấm, dashboard câu sai.
+Đã chạy trọn vòng trên máy thật: nhập 4 câu từ CSV → học sinh làm bài có autosave → nộp →
+máy chấm 2/4 → giáo viên xem heatmap và bảng câu sai nhiều nhất.
+
+| Hạng mục | Nơi |
+|---|---|
+| Chuẩn hoá & so khớp đáp án | `src/lib/grading/normalize.ts` |
+| Repo câu hỏi, auto-chấm, thống kê | `src/lib/repo/questions.ts` |
+| Trình soạn đề + nhập CSV | `src/components/quiz/question-editor.tsx` |
+| Màn làm bài (autosave, đánh dấu câu) | `src/components/quiz/quiz-runner.tsx` |
+| Xem lại sau khi trả bài | `src/components/quiz/quiz-review.tsx` |
+| Dashboard câu sai (heatmap, top câu sai, theo mảng) | `src/components/quiz/analytics.tsx` |
+| Test (26 case: 13 chấm điểm + 13 phân quyền) | `tests/grid-in.test.ts`, `tests/quiz-permissions.test.ts` |
+
+**Quyết định đáng ghi lại:**
+
+1. **Đáp án bị loại khỏi payload, không phải ẩn ở UI.** `listQuestionsForStudent` dựng lại object
+   chỉ với các cột an toàn. Test không kiểm "bằng null" mà kiểm trường **không tồn tại** —
+   `Object.hasOwn(q, "correctAnswer") === false`. Đã soi HTML thật của trang làm bài: không có
+   `correctAnswer`, `explanation`, hay bất kỳ lời giải nào.
+2. **Luật grid-in của SAT được cài đúng, không phải so chuỗi.** `3/4`, `.75`, `0.75`, `6/8` là một.
+   Số vô hạn tuần hoàn phải điền kín ô: với 2/3 thì `.666` và `.667` đều đúng, nhưng **`.67` sai**.
+   Ngược lại, đáp án viết hữu hạn được thì không nhận xấp xỉ — `.499` không phải `1/2`.
+3. **Huỷ nộp xoá luôn kết quả chấm máy.** Nếu giữ lại, học sinh nộp thử rồi huỷ nhiều lần là dò
+   ra đáp án. Đây là lỗ hổng chỉ lộ ra khi ghép auto-chấm với chức năng huỷ nộp của P2.
+4. **Câu bỏ trống vẫn ghi một dòng `is_correct = false`.** Không ghi thì heatmap sẽ tưởng cả lớp
+   đều làm câu đó, và tỉ lệ đúng bị thổi lên.
+5. **Tự luận không tự chấm.** `gradeAnswer` trả `null` chứ không đoán bừa; điểm cuối
+   = máy chấm + giáo viên chấm tay, và trần điểm tay được trừ đi phần máy đã chấm.
+6. **Heatmap không chỉ dùng màu** — mỗi ô có icon ✓/✗ cho người mù màu (DESIGN.md §10).
+
+### Tiếp theo — P4: Điểm danh & dashboard TA
+
+Điểm danh theo buổi/ngày, sửa lịch sử, thống kê chuyên cần, khoá đúng 3 tab của TA.
 
 Design chi tiết: xem `DESIGN.md`.

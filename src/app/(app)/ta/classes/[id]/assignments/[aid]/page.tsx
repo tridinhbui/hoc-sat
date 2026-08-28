@@ -3,6 +3,7 @@ import { getAssignment, listSubmissions } from "@/lib/repo/assignments";
 import { AssignmentDetailHeader } from "@/components/class/assignment-detail-header";
 import { AssignmentPublishBar } from "@/components/class/assignment-publish-bar";
 import { SubmissionTable } from "@/components/class/submission-table";
+import { AssignmentSubnav } from "@/components/quiz/assignment-subnav";
 
 export default async function AssignmentDetail({
   params,
@@ -17,6 +18,7 @@ export default async function AssignmentDetail({
   return (
     <div className="space-y-4">
       <AssignmentDetailHeader {...assignment} />
+      <AssignmentSubnav base={`/ta/classes/${id}/assignments/${aid}`} />
       <AssignmentPublishBar
         classId={id}
         assignmentId={aid}

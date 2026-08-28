@@ -1,9 +1,10 @@
 import "server-only";
 import { and, asc, count, desc, eq, inArray, isNotNull, sql } from "drizzle-orm";
-import { assignments, attachments, classMembers, submissions, user } from "@/db/schema";
+import { answers, assignments, attachments, classMembers, questions, submissions, user } from "@/db/schema";
 import type { AuthContext, ClassContext } from "@/lib/auth/guard";
 import { ForbiddenError, canGrade, canPost } from "@/lib/auth/policy";
 import { getBucket } from "@/lib/storage/r2";
+import { autoGradeSubmission } from "./questions";
 import type { UploadedFile } from "./materials";
 
 /* ------------------------------------------------------------------ *
@@ -359,7 +360,16 @@ export async function turnIn(
   }
   const a = await getAssignment(ctx, assignmentId);
   assertFilesBelongToClass(ctx, files);
-  if (files.length === 0) throw new Error("Đính kèm ít nhất một file trước khi nộp nhé.");
+
+  const [{ n: questionCount } = { n: 0 }] = await ctx.db
+    .select({ n: count() })
+    .from(questions)
+    .where(eq(questions.assignmentId, assignmentId));
+
+  // Bài trắc nghiệm nộp bằng đáp án, không cần file đính kèm.
+  if (questionCount === 0 && files.length === 0) {
+    throw new Error("Đính kèm ít nhất một file trước khi nộp nhé.");
+  }
 
   const now = new Date();
   const late = !!a.dueAt && now > a.dueAt;
@@ -393,7 +403,32 @@ export async function turnIn(
     });
   }
   await insertAttachments(ctx, "submission", id, files);
+
+  // Chấm máy ngay lúc nộp. Điểm vẫn kín cho tới khi giáo viên bấm trả bài.
+  if (questionCount > 0) await autoGradeSubmission(ctx, id);
+
   return id;
+}
+
+/**
+ * Mở bài trắc nghiệm: tạo sẵn dòng submission để có chỗ lưu tạm đáp án
+ * trong lúc học sinh đang làm.
+ */
+export async function startQuiz(ctx: ClassContext, assignmentId: string) {
+  if (ctx.classRole !== "student") throw new ForbiddenError("Chỉ học sinh mới làm bài.");
+  await getAssignment(ctx, assignmentId);
+
+  const existing = await getMySubmission(ctx, assignmentId);
+  if (existing) return existing;
+
+  const id = crypto.randomUUID();
+  await ctx.db.insert(submissions).values({
+    id,
+    assignmentId,
+    studentId: ctx.user.id,
+    status: "assigned",
+  });
+  return (await getMySubmission(ctx, assignmentId))!;
 }
 
 /** Huỷ nộp để sửa lại — chỉ khi giáo viên chưa trả bài. */
@@ -406,10 +441,24 @@ export async function unsubmit(ctx: ClassContext, assignmentId: string) {
     throw new ForbiddenError("Bài đã được trả, không huỷ nộp được nữa.");
   }
 
-  await ctx.db
-    .update(submissions)
-    .set({ status: "assigned", turnedInAt: null, isLate: false })
-    .where(eq(submissions.id, existing.id));
+  // Xoá luôn kết quả chấm máy: nếu giữ lại, học sinh có thể nộp thử rồi
+  // huỷ nộp nhiều lần để dò ra đáp án đúng.
+  await ctx.db.batch([
+    ctx.db
+      .update(answers)
+      .set({ isCorrect: null, pointsAwarded: null })
+      .where(eq(answers.submissionId, existing.id)),
+    ctx.db
+      .update(submissions)
+      .set({
+        status: "assigned",
+        turnedInAt: null,
+        isLate: false,
+        autoScore: null,
+        finalGrade: null,
+      })
+      .where(eq(submissions.id, existing.id)),
+  ]);
 }
 
 /* ------------------------------ Chấm bài ------------------------------ */
@@ -430,14 +479,19 @@ export async function gradeSubmission(
   input: { score: number | null; feedback: string },
 ) {
   assertStaff(ctx);
-  const { assignment } = await loadSubmissionInClass(ctx, submissionId);
+  const { assignment, sub } = await loadSubmissionInClass(ctx, submissionId);
 
   if (input.score !== null) {
     if (!Number.isFinite(input.score) || input.score < 0) {
       throw new Error("Điểm phải là số không âm.");
     }
-    if (input.score > assignment.points) {
-      throw new Error(`Điểm không vượt quá ${assignment.points}.`);
+    const ceiling = assignment.points - (sub.autoScore ?? 0);
+    if (input.score > ceiling) {
+      throw new Error(
+        sub.autoScore
+          ? `Máy đã chấm ${sub.autoScore} điểm, phần chấm tay không quá ${ceiling}.`
+          : `Điểm không vượt quá ${assignment.points}.`,
+      );
     }
   }
 
@@ -445,8 +499,11 @@ export async function gradeSubmission(
     .update(submissions)
     .set({
       manualScore: input.score,
-      // P2 mới có chấm tay; P3 sẽ cộng thêm autoScore của phần trắc nghiệm.
-      finalGrade: input.score,
+      // Điểm cuối = máy chấm (trắc nghiệm) + tay chấm (tự luận / bài nộp file).
+      finalGrade:
+        sub.autoScore === null && input.score === null
+          ? null
+          : (sub.autoScore ?? 0) + (input.score ?? 0),
       feedback: input.feedback.trim() || null,
       gradedBy: ctx.user.id,
     })
