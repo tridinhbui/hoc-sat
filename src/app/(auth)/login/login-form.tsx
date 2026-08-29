@@ -34,7 +34,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card>
+    <Card className="rounded-[var(--radius-xl)] border-line/80 bg-surface p-6 shadow-soft">
       <form onSubmit={onSubmit} className="space-y-4">
         <Field label="Email">
           <Input name="email" type="email" required autoComplete="email" placeholder="ban@email.com" />
@@ -45,16 +45,16 @@ export function LoginForm() {
         </Field>
 
         {error && (
-          <p className="rounded-[var(--radius-md)] bg-danger-soft px-3 py-2 text-[13px] text-[#b32340]">
+          <p className="rounded-[var(--radius-md)] bg-danger-soft px-3 py-2 text-[13px] font-semibold text-danger">
             {error}
           </p>
         )}
 
-        <Button type="submit" block disabled={loading}>
+        <Button type="submit" block disabled={loading} className="rounded-full bg-primary py-2.5 font-bold shadow-xs hover:bg-primary-hover">
           {loading ? "Đang vào..." : "Đăng nhập"}
         </Button>
 
-        <p className="text-center text-[13px] text-muted">
+        <p className="text-center text-xs font-medium text-muted">
           Tài khoản do trung tâm cấp. Quên mật khẩu? Nhắn giáo viên hoặc admin nhé.
         </p>
       </form>

@@ -6,37 +6,37 @@
    ================================================================== */
 
 @theme {
-  /* Nền */
-  --color-bg: #f2f6ff;
+  /* Nền Lumist: siêu sạch, phẳng nhẹ nhàng */
+  --color-bg: #f5f8fc;
   --color-surface: #ffffff;
-  --color-sunken: #edf2ff;
+  --color-sunken: #edf2f9;
 
   /* Chữ */
-  --color-ink: #0f1b45;
-  --color-body: #3b4a72;
-  --color-muted: #7c89ad;
+  --color-ink: #0f172a;
+  --color-body: #334155;
+  --color-muted: #64748b;
 
-  /* Brand — periwinkle */
-  --color-primary: #5b6cff;
-  --color-primary-hover: #4a5aeb;
-  --color-primary-soft: #e4e8ff;
+  /* Brand — Lumist Royal Blue */
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-primary-soft: #eff6ff;
 
-  /* Accent — gamification */
-  --color-accent: #ffb020;
-  --color-accent-warm: #ff8a3d;
-  --color-accent-soft: #fff4dc;
+  /* Accent — gamification (Lửa streak, coins, XP) */
+  --color-accent: #f59e0b;
+  --color-accent-warm: #f97316;
+  --color-accent-soft: #fff7ed;
 
   /* Trạng thái */
-  --color-success: #22c58b;
-  --color-success-soft: #ddf7ed;
-  --color-danger: #f0526b;
-  --color-danger-soft: #ffe4e8;
-  --color-info: #4cc3f0;
-  --color-info-soft: #e0f6fe;
+  --color-success: #10b981;
+  --color-success-soft: #ecfdf5;
+  --color-danger: #ef4444;
+  --color-danger-soft: #fef2f2;
+  --color-info: #0ea5e9;
+  --color-info-soft: #f0f9ff;
 
-  /* Đường nét */
-  --color-line: #e2e8f8;
-  --color-line-strong: #cbd5f0;
+  /* Đường nét viền siêu mảnh, sạch */
+  --color-line: #e2e8f0;
+  --color-line-strong: #cbd5e1;
 
   /* Bo góc */
   --radius-sm: 10px;
@@ -44,11 +44,11 @@
   --radius-lg: 20px;
   --radius-xl: 28px;
 
-  /* Bóng — ám xanh, không đen */
-  --shadow-soft-sm: 0 1px 2px rgba(15, 27, 69, 0.04);
-  --shadow-soft: 0 4px 16px rgba(60, 80, 180, 0.07);
-  --shadow-soft-md: 0 8px 28px rgba(60, 80, 180, 0.1);
-  --shadow-soft-lg: 0 16px 48px rgba(60, 80, 180, 0.13);
+  /* Bóng Lumist — mịn màng, phủ mềm */
+  --shadow-soft-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
+  --shadow-soft: 0 4px 20px -2px rgba(37, 99, 235, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --shadow-soft-md: 0 10px 25px -3px rgba(37, 99, 235, 0.10), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
+  --shadow-soft-lg: 0 20px 35px -5px rgba(37, 99, 235, 0.14), 0 8px 16px -4px rgba(15, 23, 42, 0.06);
 
   /* Font */
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
