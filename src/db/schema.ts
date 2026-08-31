@@ -35,7 +35,7 @@ export const user = sqliteTable(
     emailVerified: integer("email_verified", { mode: "boolean" }).notNull().default(false),
     image: text("image"),
 
-    // Trường mở rộng của HocSAT
+    // Trường mở rộng của AtlasSAT
     role: text("role", { enum: ROLES }).notNull().default("student"),
     phone: text("phone"),
     mustChangePassword: integer("must_change_password", { mode: "boolean" })

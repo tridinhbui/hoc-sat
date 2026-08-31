@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: { default: "HocSAT", template: "%s · HocSAT" },
+  title: { default: "AtlasSAT", template: "%s · AtlasSAT" },
   description: "Nền tảng học và luyện thi SAT của trung tâm.",
 };
 

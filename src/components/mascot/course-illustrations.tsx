@@ -16,7 +16,7 @@ export function MathCourseIllustration({ className }: { className?: string }) {
       {/* Brand logo mờ */}
       <div className="flex items-center gap-1 text-xs font-black tracking-tight text-blue-900/60">
         <span className="grid size-4 place-items-center rounded-full bg-blue-600 text-[10px] text-white">H</span>
-        HocSAT<span className="text-blue-600">.ai</span>
+        AtlasSAT
       </div>
 
       <div className="mt-3 flex items-center justify-between">
@@ -72,7 +72,7 @@ export function VerbalCourseIllustration({ className }: { className?: string }) 
       {/* Brand logo mờ */}
       <div className="flex items-center gap-1 text-xs font-black tracking-tight text-rose-900/60">
         <span className="grid size-4 place-items-center rounded-full bg-rose-500 text-[10px] text-white">H</span>
-        HocSAT<span className="text-rose-500">.ai</span>
+        AtlasSAT
       </div>
 
       <div className="mt-3 flex items-center justify-between">

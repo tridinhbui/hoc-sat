@@ -23,7 +23,7 @@ export function Lumi({
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Lumi — linh vật HocSAT phong cách Lumist"
+      aria-label="Lumi — linh vật AtlasSAT phong cách Lumist"
       className={cn("shrink-0 drop-shadow-sm", className)}
     >
       {/* Vòng hào quang/bóng nền nhẹ */}

@@ -17,7 +17,7 @@ function layout(opts: { title: string; body: string; cta?: { href: string; label
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center">
     <table role="presentation" width="100%" style="max-width:520px;background:#fff;border-radius:20px;padding:32px;">
       <tr><td>
-        <p style="margin:0 0 24px;font-size:18px;font-weight:800;color:${INK};letter-spacing:-0.02em;">HocSAT</p>
+        <p style="margin:0 0 24px;font-size:18px;font-weight:800;color:${INK};letter-spacing:-0.02em;">AtlasSAT</p>
         <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${INK};letter-spacing:-0.02em;line-height:1.3;">${opts.title}</h1>
         <div style="font-size:15px;line-height:1.6;color:#3b4a72;">${opts.body}</div>
         ${
@@ -26,7 +26,7 @@ function layout(opts: { title: string; body: string; cta?: { href: string; label
             : ""
         }
         <p style="margin:28px 0 0;font-size:13px;color:${MUTED};">
-          Email tự động từ hệ thống HocSAT. Có gì chưa rõ, nhắn giáo viên hoặc trung tâm nhé.
+          Email tự động từ hệ thống AtlasSAT. Có gì chưa rõ, nhắn giáo viên hoặc trung tâm nhé.
         </p>
       </td></tr>
     </table>
@@ -45,11 +45,11 @@ export function newAccountMail(input: {
   loginUrl: string;
 }) {
   return {
-    subject: "Tài khoản HocSAT của bạn",
+    subject: "Tài khoản AtlasSAT của bạn",
     html: layout({
       title: `Chào ${esc(input.name)}`,
       body: `
-        <p style="margin:0 0 16px;">Trung tâm đã tạo tài khoản HocSAT cho bạn.</p>
+        <p style="margin:0 0 16px;">Trung tâm đã tạo tài khoản AtlasSAT cho bạn.</p>
         <table role="presentation" style="width:100%;background:#edf2ff;border-radius:14px;padding:16px;margin:0 0 16px;">
           <tr><td style="font-size:14px;color:${MUTED};padding-bottom:4px;">Email đăng nhập</td></tr>
           <tr><td style="font-size:15px;font-weight:600;color:${INK};padding-bottom:12px;">${esc(input.email)}</td></tr>

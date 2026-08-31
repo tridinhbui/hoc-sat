@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils/cn";
 export type CuPose = "wave" | "sleep" | "graduate" | "magnify" | "confused" | "flame";
 
 /**
- * "Cú" — mascot 2D flat của HocSAT. Periwinkle + vàng, bo tròn, không viền đen.
+ * "Cú" — mascot 2D flat của AtlasSAT. Periwinkle + vàng, bo tròn, không viền đen.
  * KHÔNG dùng trong phòng thi lockdown, trang điểm, hay cảnh báo lỗi hệ thống.
  */
 export function Cu({
@@ -24,7 +24,7 @@ export function Cu({
       viewBox="0 0 160 160"
       fill="none"
       role="img"
-      aria-label="Cú — mascot của HocSAT"
+      aria-label="Cú — mascot của AtlasSAT"
       className={cn("shrink-0", className)}
     >
       {/* bóng nền pastel */}

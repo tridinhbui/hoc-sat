@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               <Sparkles size={16} />
             </span>
             <span className="font-display text-2xl font-black tracking-tight text-ink">
-              HocSAT<span className="text-primary">.ai</span>
+              AtlasSAT
             </span>
           </div>
           <p className="text-xs font-semibold text-muted">
