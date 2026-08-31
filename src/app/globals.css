@@ -1,42 +1,54 @@
-@import "tailwindcss";
-
 /* ==================================================================
-   HocSAT design tokens — xem DESIGN.md
-   Modern SaaS + Soft UI + Bento + Pastel Minimalism + Gamification
+   AtlasSAT design tokens, xem DESIGN.md
+
+   BẢNG MÀU KHOÁ CỨNG. Toàn bộ giao diện chỉ được dùng sáu mã dưới đây
+   (cộng trắng/đen và thang xám trung tính cho chữ với đường viền):
+
+     #4cc97a  xanh lá sáng      #199647  xanh lá đậm
+     #c7f000  vàng chanh        #4b1fcb  tím lam
+     #6f2dbd  tím               #4c1979  tím đậm
+
+   Các biến `-soft` là chính sáu màu đó pha trắng bằng color-mix, không
+   phải màu thứ bảy. Bảng màu KHÔNG CÓ MÀU ĐỎ: trạng thái lỗi, quá hạn và
+   vắng mặt dùng tím đậm #4c1979.
    ================================================================== */
 
 @theme {
-  /* Nền Lumist: siêu sạch, phẳng nhẹ nhàng */
-  --color-bg: #f5f8fc;
+  /* Nền */
+  --color-bg: #f6faf7;
   --color-surface: #ffffff;
-  --color-sunken: #edf2f9;
+  --color-sunken: #eef4f0;
 
-  /* Chữ */
-  --color-ink: #0f172a;
-  --color-body: #334155;
-  --color-muted: #64748b;
+  /* Chữ: xám trung tính, không ngả xanh dương */
+  --color-ink: #10221a;
+  --color-body: #33453c;
+  --color-muted: #6b7d74;
 
-  /* Brand — Lumist Royal Blue */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-soft: #eff6ff;
+  /* Brand: xanh lá */
+  --color-primary: #199647;
+  --color-primary-hover: #4cc97a;
+  --color-primary-soft: color-mix(in srgb, #4cc97a 12%, white);
 
-  /* Accent — gamification (Lửa streak, coins, XP) */
-  --color-accent: #f59e0b;
-  --color-accent-warm: #f97316;
-  --color-accent-soft: #fff7ed;
+  /* Nhấn: vàng chanh */
+  --color-accent: #c7f000;
+  --color-accent-warm: #c7f000;
+  --color-accent-soft: color-mix(in srgb, #c7f000 18%, white);
 
   /* Trạng thái */
-  --color-success: #10b981;
-  --color-success-soft: #ecfdf5;
-  --color-danger: #ef4444;
-  --color-danger-soft: #fef2f2;
-  --color-info: #0ea5e9;
-  --color-info-soft: #f0f9ff;
+  --color-success: #4cc97a;
+  --color-success-soft: color-mix(in srgb, #4cc97a 14%, white);
+  --color-danger: #4c1979;
+  --color-danger-soft: color-mix(in srgb, #4c1979 10%, white);
+  --color-info: #6f2dbd;
+  --color-info-soft: color-mix(in srgb, #6f2dbd 10%, white);
 
-  /* Đường nét viền siêu mảnh, sạch */
-  --color-line: #e2e8f0;
-  --color-line-strong: #cbd5e1;
+  /* Tím lam: nhấn phụ và biểu đồ */
+  --color-violet: #4b1fcb;
+  --color-violet-soft: color-mix(in srgb, #4b1fcb 10%, white);
+
+  /* Đường nét */
+  --color-line: color-mix(in srgb, #199647 12%, white);
+  --color-line-strong: color-mix(in srgb, #199647 26%, white);
 
   /* Bo góc */
   --radius-sm: 10px;
@@ -45,10 +57,10 @@
   --radius-xl: 28px;
 
   /* Bóng Lumist — mịn màng, phủ mềm */
-  --shadow-soft-sm: 0 1px 3px rgba(15, 23, 42, 0.04), 0 1px 2px rgba(15, 23, 42, 0.02);
-  --shadow-soft: 0 4px 20px -2px rgba(37, 99, 235, 0.07), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
-  --shadow-soft-md: 0 10px 25px -3px rgba(37, 99, 235, 0.10), 0 4px 10px -2px rgba(15, 23, 42, 0.05);
-  --shadow-soft-lg: 0 20px 35px -5px rgba(37, 99, 235, 0.14), 0 8px 16px -4px rgba(15, 23, 42, 0.06);
+  --shadow-soft-sm: 0 1px 3px rgba(16, 34, 26, 0.04), 0 1px 2px rgba(16, 34, 26, 0.02);
+  --shadow-soft: 0 4px 20px -2px rgba(25, 150, 71, 0.07), 0 2px 6px -1px rgba(16, 34, 26, 0.04);
+  --shadow-soft-md: 0 10px 25px -3px rgba(25, 150, 71, 0.10), 0 4px 10px -2px rgba(16, 34, 26, 0.05);
+  --shadow-soft-lg: 0 20px 35px -5px rgba(25, 150, 71, 0.14), 0 8px 16px -4px rgba(16, 34, 26, 0.06);
 
   /* Font */
   --font-display: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
