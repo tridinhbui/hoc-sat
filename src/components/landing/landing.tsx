@@ -64,9 +64,6 @@ export function Landing() {
             <a href="#about" className="transition-colors hover:text-primary">
               {isVi ? "Về chúng tôi" : "About us"}
             </a>
-            <a href="#audience" className="transition-colors hover:text-primary">
-              {isVi ? "Dành cho ai" : "Who it is for"}
-            </a>
             <a href="#faq" className="transition-colors hover:text-primary">
               {isVi ? "Hỏi đáp" : "FAQ"}
             </a>
@@ -284,30 +281,6 @@ export function Landing() {
                   </Reveal>
                 );
               })}
-            </div>
-          </div>
-        </section>
-
-        {/* -------------------------------------------------------------
-            SECTION: DÀNH CHO AI (Audience)
-            ------------------------------------------------------------- */}
-        <section id="audience" className="border-t border-line/60 bg-bg py-16">
-          <div className="mx-auto max-w-[1180px] px-5">
-            <Reveal direction="up">
-              <h2 className="font-display text-center text-3xl font-black text-ink sm:text-4xl">
-                {t.audienceHeading}
-              </h2>
-            </Reveal>
-
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {t.audiences.map((a, i) => (
-                <Reveal key={a.key} direction="up" delay={i * 120}>
-                  <div className="h-full rounded-2xl border border-line bg-surface p-6 shadow-soft transition-all hover:shadow-soft-md">
-                    <h3 className="font-display text-lg font-bold text-ink">{a.title}</h3>
-                    <p className="mt-2 text-xs leading-relaxed text-muted">{a.body}</p>
-                  </div>
-                </Reveal>
-              ))}
             </div>
           </div>
         </section>
