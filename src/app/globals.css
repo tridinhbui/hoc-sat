@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 /* ==================================================================
    AtlasSAT design tokens, xem DESIGN.md
 
@@ -8,7 +10,8 @@
      #c7f000  vàng chanh        #4b1fcb  tím lam
      #6f2dbd  tím               #4c1979  tím đậm
 
-   Các biến `-soft` là chính sáu màu đó pha trắng bằng color-mix, không
+   Các biến `-soft` là chính sáu màu đó pha sẵn với trắng (Tailwind v4 cần
+   màu tĩnh trong @theme, color-mix ở đây làm hỏng cả bảng utility), không
    phải màu thứ bảy. Bảng màu KHÔNG CÓ MÀU ĐỎ: trạng thái lỗi, quá hạn và
    vắng mặt dùng tím đậm #4c1979.
    ================================================================== */
@@ -27,28 +30,28 @@
   /* Brand: xanh lá */
   --color-primary: #199647;
   --color-primary-hover: #4cc97a;
-  --color-primary-soft: color-mix(in srgb, #4cc97a 12%, white);
+  --color-primary-soft: #eaf9ef;
 
   /* Nhấn: vàng chanh */
   --color-accent: #c7f000;
   --color-accent-warm: #c7f000;
-  --color-accent-soft: color-mix(in srgb, #c7f000 18%, white);
+  --color-accent-soft: #f5fcd1;
 
   /* Trạng thái */
   --color-success: #4cc97a;
-  --color-success-soft: color-mix(in srgb, #4cc97a 14%, white);
+  --color-success-soft: #e6f7ec;
   --color-danger: #4c1979;
-  --color-danger-soft: color-mix(in srgb, #4c1979 10%, white);
+  --color-danger-soft: #ede8f2;
   --color-info: #6f2dbd;
-  --color-info-soft: color-mix(in srgb, #6f2dbd 10%, white);
+  --color-info-soft: #f1eaf8;
 
   /* Tím lam: nhấn phụ và biểu đồ */
   --color-violet: #4b1fcb;
-  --color-violet-soft: color-mix(in srgb, #4b1fcb 10%, white);
+  --color-violet-soft: #ede9fa;
 
   /* Đường nét */
-  --color-line: color-mix(in srgb, #199647 12%, white);
-  --color-line-strong: color-mix(in srgb, #199647 26%, white);
+  --color-line: #e3f2e9;
+  --color-line-strong: #c3e4cf;
 
   /* Bo góc */
   --radius-sm: 10px;
