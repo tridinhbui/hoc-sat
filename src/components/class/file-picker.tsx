@@ -85,7 +85,7 @@ export function FilePicker({
               <button
                 type="button"
                 onClick={() => onChange(files.filter((x) => x.r2Key !== f.r2Key))}
-                className="shrink-0 text-muted hover:text-[#b32340]"
+                className="shrink-0 text-muted hover:text-[#4c1979]"
                 title="Bỏ file này"
               >
                 <X size={16} />

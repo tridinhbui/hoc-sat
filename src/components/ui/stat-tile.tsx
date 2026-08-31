@@ -19,9 +19,9 @@ export function StatTile({
 }) {
   const tones = {
     brand: "bg-primary-soft text-primary",
-    accent: "bg-accent-soft text-[#9a6200]",
-    success: "bg-success-soft text-[#0d7a54]",
-    danger: "bg-danger-soft text-[#b32340]",
+    accent: "bg-accent-soft text-[#4c1979]",
+    success: "bg-success-soft text-[#199647]",
+    danger: "bg-danger-soft text-[#4c1979]",
   } as const;
 
   return (

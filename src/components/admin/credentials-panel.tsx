@@ -29,7 +29,7 @@ export function CredentialsPanel({ users }: { users: CreatedUser[] }) {
 
   return (
     <div className="border-accent bg-accent-soft mt-4 rounded-[var(--radius-lg)] border p-4">
-      <p className="text-[13px] font-semibold text-[#9a6200]">
+      <p className="text-[13px] font-semibold text-[#4c1979]">
         Mật khẩu tạm chỉ hiện lần này. Chép lại trước khi rời trang, mất thì phải đặt lại.
       </p>
 

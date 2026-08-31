@@ -52,9 +52,9 @@ export function Countdown({
       className={cn(
         "tnum rounded-full px-4 py-2 font-display text-xl font-extrabold tabular-nums",
         critical
-          ? "bg-[#f0526b] text-white"
+          ? "bg-[#c7f000] text-white"
           : warn
-            ? "bg-[#ffb020] text-[#0f1b45]"
+            ? "bg-[#c7f000] text-[#2b0e45]"
             : "bg-white/10 text-white",
       )}
     >

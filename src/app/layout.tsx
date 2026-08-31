@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   description: "Nền tảng học và luyện thi SAT của trung tâm.",
 };
 
-export const viewport: Viewport = { themeColor: "#F2F6FF" };
+export const viewport: Viewport = { themeColor: "#f6faf7" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

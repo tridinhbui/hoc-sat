@@ -53,7 +53,7 @@ export function ChangePasswordForm({ first }: { first: boolean }) {
         </Field>
 
         {error && (
-          <p className="rounded-[var(--radius-md)] bg-danger-soft px-3 py-2 text-[13px] text-[#b32340]">
+          <p className="rounded-[var(--radius-md)] bg-danger-soft px-3 py-2 text-[13px] text-[#4c1979]">
             {error}
           </p>
         )}

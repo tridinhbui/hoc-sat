@@ -8,6 +8,7 @@ import type { ClassContext } from "@/lib/auth/guard";
 import { createAssignment, gradeSubmission, returnSubmission, turnIn } from "@/lib/repo/assignments";
 import { notifyGradeReturned, notifyNewAssignment } from "@/lib/email/notify";
 import { queueMail } from "@/lib/email/send";
+import { sendCredentials } from "@/lib/email/credentials";
 import { gradeReturnedMail, newAccountMail, newAssignmentMail } from "@/lib/email/templates";
 
 /* ------------------------------------------------------------------ *
@@ -155,5 +156,29 @@ describe("Email không được làm hỏng nghiệp vụ", () => {
 
   it("danh sách rỗng thì không làm gì", async () => {
     await expect(notifyGradeReturned(teacher(), [])).resolves.toBeUndefined();
+  });
+});
+
+describe("Gửi mật khẩu tạm", () => {
+  it("chưa cấu hình email thì trả false, KHÔNG ném lỗi", async () => {
+    // Admin vẫn đọc được mật khẩu trên màn hình, nên tài khoản không bị kẹt.
+    await expect(
+      sendCredentials([{ name: "A", email: "a@b.vn", tempPassword: "Abc12345" }]),
+    ).resolves.toBe(false);
+  });
+
+  it("danh sách rỗng là no-op", async () => {
+    await expect(sendCredentials([])).resolves.toBe(false);
+  });
+
+  it("thiếu tên thì dùng email làm xưng hô, không ra 'Chào undefined'", async () => {
+    const mail = newAccountMail({
+      name: "a@b.vn",
+      email: "a@b.vn",
+      tempPassword: "Abc12345",
+      loginUrl: "https://atlassat.vn/login",
+    });
+    expect(mail.html).toContain("Chào a@b.vn");
+    expect(mail.html).not.toContain("undefined");
   });
 });

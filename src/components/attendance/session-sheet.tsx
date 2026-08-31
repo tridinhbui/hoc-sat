@@ -167,7 +167,7 @@ export function SessionSheet({
                 e.preventDefault();
               }
             }}
-            className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-danger-soft hover:text-[#b32340]"
+            className="flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-muted transition-colors hover:bg-danger-soft hover:text-[#4c1979]"
           >
             <Trash2 size={17} /> Xoá buổi
           </button>

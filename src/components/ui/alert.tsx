@@ -11,10 +11,10 @@ export function Alert({
     <p
       className={cn(
         "rounded-[var(--radius-md)] px-3 py-2 text-[13px]",
-        tone === "danger" && "bg-danger-soft text-[#b32340]",
-        tone === "success" && "bg-success-soft text-[#0d7a54]",
-        tone === "info" && "bg-info-soft text-[#0b7ba3]",
-        tone === "warning" && "bg-accent-soft text-[#9a6200]",
+        tone === "danger" && "bg-danger-soft text-[#4c1979]",
+        tone === "success" && "bg-success-soft text-[#199647]",
+        tone === "info" && "bg-info-soft text-[#6f2dbd]",
+        tone === "warning" && "bg-accent-soft text-[#4c1979]",
       )}
     >
       {children}

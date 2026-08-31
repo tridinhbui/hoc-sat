@@ -42,7 +42,7 @@ export function SignOutButton({
         aria-label="Đăng xuất"
         className={cn(
           "grid size-9 place-items-center rounded-full text-muted transition-colors",
-          "active:bg-danger-soft active:text-[#b32340] disabled:opacity-50",
+          "active:bg-danger-soft active:text-[#4c1979] disabled:opacity-50",
           className,
         )}
       >
@@ -58,7 +58,7 @@ export function SignOutButton({
       disabled={busy}
       className={cn(
         "flex w-full items-center gap-3 rounded-full px-3.5 py-2.5 text-sm font-semibold text-muted",
-        "transition-colors hover:bg-danger-soft hover:text-[#b32340] disabled:opacity-50",
+        "transition-colors hover:bg-danger-soft hover:text-[#4c1979] disabled:opacity-50",
         className,
       )}
     >

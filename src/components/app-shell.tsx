@@ -24,6 +24,7 @@ const STUDENT_SECTIONS: NavSection[] = [
     title: "HỌC TẬP",
     items: [
       { href: "/student/classes", label: "Khóa học của tôi" },
+      { href: "/student/practice", label: "Luyện tập theo điểm yếu" },
       { href: "/student/join", label: "Vào lớp mới" },
     ],
   },

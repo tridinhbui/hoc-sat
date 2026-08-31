@@ -6,10 +6,17 @@
  * được, nhưng vẫn giữ đúng màu và giọng điệu.
  * ------------------------------------------------------------------ */
 
-const INK = "#0f1b45";
-const PRIMARY = "#5b6cff";
-const MUTED = "#7c89ad";
-const BG = "#f2f6ff";
+/**
+ * Màu phải khớp bảng màu trong `globals.css`, nhưng KHÔNG dùng lại biến CSS
+ * được: client email (nhất là Outlook) không đọc `var()`. Đổi thương hiệu thì
+ * phải sửa cả hai chỗ — chính vì vậy để hằng số ngay đây cho dễ thấy.
+ */
+const INK = "#10221a";
+const PRIMARY = "#199647";
+const PRIMARY_SOFT = "#eaf9ef";
+const MUTED = "#6b7f74";
+const BG = "#f6faf7";
+const SUNKEN = "#eef5f0";
 
 function layout(opts: { title: string; body: string; cta?: { href: string; label: string } }) {
   return `<!doctype html>
@@ -19,7 +26,7 @@ function layout(opts: { title: string; body: string; cta?: { href: string; label
       <tr><td>
         <p style="margin:0 0 24px;font-size:18px;font-weight:800;color:${INK};letter-spacing:-0.02em;">AtlasSAT</p>
         <h1 style="margin:0 0 16px;font-size:22px;font-weight:800;color:${INK};letter-spacing:-0.02em;line-height:1.3;">${opts.title}</h1>
-        <div style="font-size:15px;line-height:1.6;color:#3b4a72;">${opts.body}</div>
+        <div style="font-size:15px;line-height:1.6;color:#3c4f45;">${opts.body}</div>
         ${
           opts.cta
             ? `<p style="margin:28px 0 0;"><a href="${opts.cta.href}" style="display:inline-block;background:${PRIMARY};color:#fff;text-decoration:none;font-weight:600;font-size:15px;padding:12px 24px;border-radius:999px;">${opts.cta.label}</a></p>`
@@ -50,7 +57,7 @@ export function newAccountMail(input: {
       title: `Chào ${esc(input.name)}`,
       body: `
         <p style="margin:0 0 16px;">Trung tâm đã tạo tài khoản AtlasSAT cho bạn.</p>
-        <table role="presentation" style="width:100%;background:#edf2ff;border-radius:14px;padding:16px;margin:0 0 16px;">
+        <table role="presentation" style="width:100%;background:${SUNKEN};border-radius:14px;padding:16px;margin:0 0 16px;">
           <tr><td style="font-size:14px;color:${MUTED};padding-bottom:4px;">Email đăng nhập</td></tr>
           <tr><td style="font-size:15px;font-weight:600;color:${INK};padding-bottom:12px;">${esc(input.email)}</td></tr>
           <tr><td style="font-size:14px;color:${MUTED};padding-bottom:4px;">Mật khẩu tạm</td></tr>
@@ -112,7 +119,7 @@ export function gradeReturnedMail(input: {
         }
         ${
           input.feedback
-            ? `<div style="background:#e4e8ff;border-radius:14px;padding:16px;margin:0 0 8px;">
+            ? `<div style="background:${PRIMARY_SOFT};border-radius:14px;padding:16px;margin:0 0 8px;">
                  <p style="margin:0 0 6px;font-size:13px;font-weight:600;color:${PRIMARY};">Nhận xét của giáo viên</p>
                  <p style="margin:0;white-space:pre-wrap;">${esc(input.feedback)}</p>
                </div>`

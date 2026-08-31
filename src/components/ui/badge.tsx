@@ -8,10 +8,10 @@ const badge = cva(
     variants: {
       tone: {
         brand: "bg-primary-soft text-primary",
-        accent: "bg-accent-soft text-[#9a6200]",
-        success: "bg-success-soft text-[#0d7a54]",
-        danger: "bg-danger-soft text-[#b32340]",
-        info: "bg-info-soft text-[#0b7ba3]",
+        accent: "bg-accent-soft text-[#4c1979]",
+        success: "bg-success-soft text-[#199647]",
+        danger: "bg-danger-soft text-[#4c1979]",
+        info: "bg-info-soft text-[#6f2dbd]",
         neutral: "bg-sunken text-muted",
       },
     },

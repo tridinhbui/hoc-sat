@@ -73,7 +73,7 @@ export function AnnouncementList({
                       <button
                         type="submit"
                         title={a.pinned ? "Bỏ ghim" : "Ghim lên đầu"}
-                        className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-[#9a6200]"
+                        className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-accent-soft hover:text-[#4c1979]"
                       >
                         <Pin size={17} />
                       </button>
@@ -86,7 +86,7 @@ export function AnnouncementList({
                       <button
                         type="submit"
                         title="Xoá thông báo"
-                        className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#b32340]"
+                        className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#4c1979]"
                       >
                         <Trash2 size={17} />
                       </button>

@@ -110,7 +110,7 @@ export function QuestionEditor({
               <button
                 type="submit"
                 title="Xoá câu hỏi"
-                className="grid size-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#b32340]"
+                className="grid size-9 shrink-0 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#4c1979]"
               >
                 <Trash2 size={17} />
               </button>
@@ -138,7 +138,7 @@ export function QuestionEditor({
                       {c.key}
                     </span>
                     <span className="min-w-0 flex-1 text-[14px] text-ink">{c.text}</span>
-                    {right && <span className="text-[12px] font-semibold text-[#0d7a54]">Đáp án</span>}
+                    {right && <span className="text-[12px] font-semibold text-[#199647]">Đáp án</span>}
                   </li>
                 );
               })}

@@ -91,7 +91,7 @@ export function Agenda({
                 <button
                   type="submit"
                   title="Xoá khỏi lịch"
-                  className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#b32340]"
+                  className="grid size-9 place-items-center rounded-full text-muted transition-colors hover:bg-danger-soft hover:text-[#4c1979]"
                 >
                   <Trash2 size={16} />
                 </button>

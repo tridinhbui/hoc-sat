@@ -12,6 +12,7 @@ import {
   type CreatedUser,
 } from "@/lib/repo/users";
 import { parseCsv } from "@/lib/utils/csv";
+import { sendCredentials } from "@/lib/email/credentials";
 import type { ActionState } from "./classes";
 
 /* ------------------------------------------------------------------ *
@@ -39,8 +40,18 @@ export async function createUserAction(_prev: AdminState, form: FormData): Promi
       role,
       phone: String(form.get("phone") ?? ""),
     });
+    // Gửi mật khẩu tạm qua email. Không chặn luồng và không làm hỏng việc
+    // tạo tài khoản nếu email lỗi — màn hình vẫn hiện mật khẩu để admin
+    // đọc cho học sinh.
+    const mailed = await sendCredentials([created]);
+
     revalidatePath("/admin/users");
-    return { ok: `Đã tạo tài khoản cho ${created.email}.`, created: [created] };
+    return {
+      ok: mailed
+        ? `Đã tạo tài khoản cho ${created.email} và gửi mật khẩu qua email.`
+        : `Đã tạo tài khoản cho ${created.email}. Chưa gửi được email — đọc mật khẩu tạm bên dưới cho người dùng.`,
+      created: [created],
+    };
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Không tạo được tài khoản." };
   }
@@ -77,8 +88,14 @@ export async function importUsersAction(_prev: AdminState, form: FormData): Prom
   if (res.created.length === 0) {
     return { error: "Không tạo được tài khoản nào.", failed: res.errors };
   }
+
+  const mailed = await sendCredentials(res.created);
+  const skipped = res.errors.length ? `, bỏ qua ${res.errors.length} dòng lỗi` : "";
+
   return {
-    ok: `Đã tạo ${res.created.length} tài khoản${res.errors.length ? `, bỏ qua ${res.errors.length} dòng lỗi` : ""}.`,
+    ok: mailed
+      ? `Đã tạo ${res.created.length} tài khoản và gửi mật khẩu qua email${skipped}.`
+      : `Đã tạo ${res.created.length} tài khoản${skipped}. Chưa gửi được email — đọc mật khẩu tạm bên dưới cho từng người.`,
     created: res.created,
     failed: res.errors,
   };
@@ -91,9 +108,15 @@ export async function resetPasswordAction(_prev: AdminState, form: FormData): Pr
   try {
     const pw = await resetPassword(ctx, userId);
     const target = String(form.get("email") ?? userId);
+    const name = String(form.get("name") ?? "");
+
+    const mailed = await sendCredentials([{ name, email: target, tempPassword: pw }]);
     revalidatePath("/admin/users");
+
     return {
-      ok: `Đã đặt lại mật khẩu cho ${target}.`,
+      ok: mailed
+        ? `Đã đặt lại mật khẩu cho ${target} và gửi qua email.`
+        : `Đã đặt lại mật khẩu cho ${target}. Chưa gửi được email — đọc mật khẩu tạm bên dưới.`,
       created: [{ id: userId, email: target, tempPassword: pw }],
     };
   } catch (e) {

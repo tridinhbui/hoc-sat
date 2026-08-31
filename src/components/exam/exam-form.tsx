@@ -88,7 +88,7 @@ export function ExamForm({ classId, subject }: { classId: string; subject: Subje
                   <button
                     type="button"
                     onClick={() => setModules((p) => p.filter((_, j) => j !== i))}
-                    className="text-muted hover:text-[#b32340]"
+                    className="text-muted hover:text-[#4c1979]"
                     title="Bỏ module này"
                   >
                     <X size={16} />

@@ -7,11 +7,11 @@ const WEEKDAYS = ["T2", "T3", "T4", "T5", "T6", "T7", "CN"];
 
 /** Màu theo loại mục — hạn nộp cam, thi đỏ, buổi học tím. */
 export const TYPE_STYLE: Record<string, string> = {
-  deadline: "bg-accent-soft text-[#9a6200]",
-  midterm: "bg-danger-soft text-[#b32340]",
-  final: "bg-danger-soft text-[#b32340]",
+  deadline: "bg-accent-soft text-[#4c1979]",
+  midterm: "bg-danger-soft text-[#4c1979]",
+  final: "bg-danger-soft text-[#4c1979]",
   class: "bg-primary-soft text-primary",
-  other: "bg-info-soft text-[#0b7ba3]",
+  other: "bg-info-soft text-[#6f2dbd]",
 };
 
 export function MonthView({ month, items }: { month: string; items: FeedItem[] }) {

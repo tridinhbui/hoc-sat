@@ -135,8 +135,8 @@ export function QuizRunner({
                 className={cn(
                   "grid size-9 shrink-0 place-items-center rounded-full transition-colors",
                   a.flagged
-                    ? "bg-accent-soft text-[#9a6200]"
-                    : "text-muted hover:bg-accent-soft hover:text-[#9a6200]",
+                    ? "bg-accent-soft text-[#4c1979]"
+                    : "text-muted hover:bg-accent-soft hover:text-[#4c1979]",
                 )}
               >
                 <Flag size={17} />

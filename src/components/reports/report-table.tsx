@@ -37,9 +37,9 @@ function Pct({ value }: { value: number | null }) {
     <span
       className={cn(
         "tnum font-bold",
-        value >= 85 && "text-[#0d7a54]",
+        value >= 85 && "text-[#199647]",
         value >= 60 && value < 85 && "text-ink",
-        value < 60 && "text-[#b32340]",
+        value < 60 && "text-[#4c1979]",
       )}
     >
       {value}%

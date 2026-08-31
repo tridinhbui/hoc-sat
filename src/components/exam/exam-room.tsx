@@ -151,7 +151,7 @@ export function ExamRoom({
       <div className="exam-mode grid min-h-dvh place-items-center px-5">
         <div className="max-w-[460px] text-center">
           <h1 className="mb-3">Bài thi đã kết thúc</h1>
-          <p className="text-[#c3cbe4]">{ended}</p>
+          <p className="text-[#d8c9e8]">{ended}</p>
         </div>
       </div>
     );
@@ -162,12 +162,12 @@ export function ExamRoom({
     return (
       <div className="exam-mode grid min-h-dvh place-items-center px-5">
         <div className="w-full max-w-[520px]">
-          <p className="mb-1 text-sm text-[#8f9ac2]">
+          <p className="mb-1 text-sm text-[#b09ec6]">
             Module {moduleIndex + 1}/{moduleTotal}
           </p>
           <h1 className="mb-4">{module.name}</h1>
 
-          <div className="mb-6 space-y-2 rounded-[var(--radius-lg)] bg-white/5 p-5 text-[15px] text-[#c3cbe4]">
+          <div className="mb-6 space-y-2 rounded-[var(--radius-lg)] bg-white/5 p-5 text-[15px] text-[#d8c9e8]">
             <p>
               <strong className="text-white">{module.durationMinutes} phút</strong> ·{" "}
               {questions.length} câu
@@ -191,7 +191,7 @@ export function ExamRoom({
             type="button"
             onClick={begin}
             disabled={busy}
-            className="w-full rounded-full bg-white px-6 py-3.5 font-display text-base font-bold text-[#0f1b45] disabled:opacity-50"
+            className="w-full rounded-full bg-white px-6 py-3.5 font-display text-base font-bold text-[#2b0e45] disabled:opacity-50"
           >
             {busy ? "Đang mở đề..." : "Bắt đầu làm bài"}
           </button>
@@ -204,20 +204,20 @@ export function ExamRoom({
     <div className="exam-mode min-h-dvh">
       {/* Mất toàn màn hình: che kín đề cho tới khi vào lại. */}
       {lockdown && !fullscreen && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-[#0f1b45] px-5">
+        <div className="fixed inset-0 z-50 grid place-items-center bg-[#2b0e45] px-5">
           <div className="max-w-[420px] text-center">
-            <AlertTriangle size={40} className="mx-auto mb-4 text-[#f0526b]" />
+            <AlertTriangle size={40} className="mx-auto mb-4 text-[#c7f000]" />
             <h2 className="mb-2">Bạn đã thoát toàn màn hình</h2>
-            <p className="mb-1 text-[#c3cbe4]">
+            <p className="mb-1 text-[#d8c9e8]">
               Lần vi phạm {violations}/{violationLimit}. Đồng hồ vẫn đang chạy.
             </p>
-            <p className="mb-5 text-sm text-[#8f9ac2]">
+            <p className="mb-5 text-sm text-[#b09ec6]">
               Vào lại toàn màn hình để tiếp tục làm bài.
             </p>
             <button
               type="button"
               onClick={requestFullscreen}
-              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-[#0f1b45]"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-semibold text-[#2b0e45]"
             >
               <Maximize size={18} /> Vào lại toàn màn hình
             </button>
@@ -225,28 +225,28 @@ export function ExamRoom({
         </div>
       )}
 
-      <header className="sticky top-0 z-30 flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#0f1b45] px-5 py-3">
+      <header className="sticky top-0 z-30 flex flex-wrap items-center gap-3 border-b border-white/10 bg-[#2b0e45] px-5 py-3">
         <span className="text-sm font-semibold text-white">
           {module.name}
-          <span className="ml-2 font-normal text-[#8f9ac2]">
+          <span className="ml-2 font-normal text-[#b09ec6]">
             Module {moduleIndex + 1}/{moduleTotal}
           </span>
         </span>
 
-        <span className="tnum text-sm text-[#c3cbe4]">
+        <span className="tnum text-sm text-[#d8c9e8]">
           {answered}/{questions.length} câu
         </span>
 
-        <span className="flex items-center gap-1.5 text-[13px] text-[#8f9ac2]">
+        <span className="flex items-center gap-1.5 text-[13px] text-[#b09ec6]">
           {saving === "saving" && <Loader2 size={14} className="animate-spin" />}
-          {saving === "saved" && <Check size={14} className="text-[#22c58b]" />}
+          {saving === "saved" && <Check size={14} className="text-[#4cc97a]" />}
           {saving === "saving" ? "Đang lưu" : saving === "saved" ? "Đã lưu" : ""}
-          {saving === "error" && <span className="text-[#f0526b]">Lưu lỗi</span>}
+          {saving === "error" && <span className="text-[#c7f000]">Lưu lỗi</span>}
         </span>
 
         <div className="ml-auto flex items-center gap-3">
           {violations > 0 && (
-            <span className="tnum rounded-full bg-[#f0526b]/20 px-3 py-1 text-[13px] font-semibold text-[#ffb3c0]">
+            <span className="tnum rounded-full bg-[#c7f000]/20 px-3 py-1 text-[13px] font-semibold text-[#e4f79a]">
               Vi phạm {violations}/{violationLimit}
             </span>
           )}
@@ -255,7 +255,7 @@ export function ExamRoom({
       </header>
 
       {warning && (
-        <p className="border-b border-white/10 bg-[#f0526b]/15 px-5 py-2.5 text-sm text-[#ffb3c0]">
+        <p className="border-b border-white/10 bg-[#c7f000]/15 px-5 py-2.5 text-sm text-[#e4f79a]">
           {warning}
         </p>
       )}
@@ -268,7 +268,7 @@ export function ExamRoom({
               key={q.id}
               className={cn(
                 "rounded-[var(--radius-lg)] border bg-white/5 p-5",
-                a.flagged ? "border-[#ffb020]" : "border-white/10",
+                a.flagged ? "border-[#c7f000]" : "border-white/10",
               )}
             >
               <div className="mb-3 flex items-center justify-between gap-3">
@@ -279,14 +279,14 @@ export function ExamRoom({
                   title={a.flagged ? "Bỏ đánh dấu" : "Đánh dấu xem lại"}
                   className={cn(
                     "grid size-9 place-items-center rounded-full",
-                    a.flagged ? "bg-[#ffb020] text-[#0f1b45]" : "text-[#8f9ac2] hover:bg-white/10",
+                    a.flagged ? "bg-[#c7f000] text-[#2b0e45]" : "text-[#b09ec6] hover:bg-white/10",
                   )}
                 >
                   <Flag size={17} />
                 </button>
               </div>
 
-              <p className="mb-4 whitespace-pre-wrap text-[#e8ecf8]">{q.prompt}</p>
+              <p className="mb-4 whitespace-pre-wrap text-[#efe7f5]">{q.prompt}</p>
 
               {q.imageR2Key && (
                 /* eslint-disable-next-line @next/next/no-img-element */
@@ -319,12 +319,12 @@ export function ExamRoom({
                           <span
                             className={cn(
                               "grid size-7 shrink-0 place-items-center rounded-full text-[13px] font-bold",
-                              picked ? "bg-white text-[#0f1b45]" : "bg-white/10 text-[#c3cbe4]",
+                              picked ? "bg-white text-[#2b0e45]" : "bg-white/10 text-[#d8c9e8]",
                             )}
                           >
                             {c.key}
                           </span>
-                          <span className="min-w-0 flex-1 text-[15px] text-[#e8ecf8]">{c.text}</span>
+                          <span className="min-w-0 flex-1 text-[15px] text-[#efe7f5]">{c.text}</span>
                         </label>
                       </li>
                     );
@@ -337,7 +337,7 @@ export function ExamRoom({
                   value={a.response ?? ""}
                   onChange={(e) => update(q.id, { response: e.target.value })}
                   placeholder={q.type === "grid_in" ? "Ví dụ: 3/4 hoặc .75" : "Bài làm..."}
-                  className="tnum h-12 w-full max-w-[260px] rounded-[var(--radius-md)] border border-white/20 bg-white/10 px-4 text-center text-lg font-bold text-white placeholder:text-[#8f9ac2]"
+                  className="tnum h-12 w-full max-w-[260px] rounded-[var(--radius-md)] border border-white/20 bg-white/10 px-4 text-center text-lg font-bold text-white placeholder:text-[#b09ec6]"
                 />
               )}
             </section>
@@ -345,7 +345,7 @@ export function ExamRoom({
         })}
 
         <div className="flex flex-wrap items-center justify-between gap-3 rounded-[var(--radius-lg)] border border-white/10 bg-white/5 p-5">
-          <p className="text-sm text-[#c3cbe4]">
+          <p className="text-sm text-[#d8c9e8]">
             {moduleIndex + 1 < moduleTotal
               ? "Nộp module này rồi chuyển sang module kế. Không quay lại được."
               : "Đây là module cuối. Nộp là kết thúc bài thi."}
@@ -358,7 +358,7 @@ export function ExamRoom({
               if (left > 0 && !confirm(`Còn ${left} câu chưa trả lời. Nộp module này?`)) return;
               finishModule();
             }}
-            className="rounded-full bg-white px-6 py-3 font-semibold text-[#0f1b45] disabled:opacity-50"
+            className="rounded-full bg-white px-6 py-3 font-semibold text-[#2b0e45] disabled:opacity-50"
           >
             {busy ? "Đang nộp..." : moduleIndex + 1 < moduleTotal ? "Nộp và sang module kế" : "Nộp bài thi"}
           </button>

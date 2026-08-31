@@ -30,7 +30,7 @@ const OPTIONS: {
     label: "Math",
     desc: "Module 35 phút / 22 câu. Có câu grid-in, đề nhiều biểu đồ.",
     icon: Calculator,
-    tone: "bg-accent-soft text-[#9a6200]",
+    tone: "bg-accent-soft text-[#4c1979]",
   },
 ];
 

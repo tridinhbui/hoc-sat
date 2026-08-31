@@ -152,9 +152,9 @@ export function QuizAnalytics({
                       <span
                         className={cn(
                           "tnum inline-block rounded-full px-1.5 py-0.5 text-[11px] font-bold",
-                          tone === "success" && "bg-success-soft text-[#0d7a54]",
-                          tone === "accent" && "bg-accent-soft text-[#9a6200]",
-                          tone === "danger" && "bg-danger-soft text-[#b32340]",
+                          tone === "success" && "bg-success-soft text-[#199647]",
+                          tone === "accent" && "bg-accent-soft text-[#4c1979]",
+                          tone === "danger" && "bg-danger-soft text-[#4c1979]",
                           tone === "neutral" && "bg-sunken text-muted",
                         )}
                       >
@@ -228,14 +228,14 @@ export function QuizAnalytics({
 function Cell({ value }: { value: boolean | null | undefined }) {
   if (value === true) {
     return (
-      <span className="grid size-6 place-items-center rounded-[6px] bg-success-soft text-[#0d7a54]">
+      <span className="grid size-6 place-items-center rounded-[6px] bg-success-soft text-[#199647]">
         <Check size={14} strokeWidth={3} />
       </span>
     );
   }
   if (value === false) {
     return (
-      <span className="grid size-6 place-items-center rounded-[6px] bg-danger-soft text-[#b32340]">
+      <span className="grid size-6 place-items-center rounded-[6px] bg-danger-soft text-[#4c1979]">
         <X size={14} strokeWidth={3} />
       </span>
     );

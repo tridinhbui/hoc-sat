@@ -1,8 +1,8 @@
 import { cn } from "@/lib/utils/cn";
 
 /** Nền pastel sinh theo hash tên — cùng người luôn ra cùng màu */
-const PASTELS = ["#E4E8FF", "#FFF4DC", "#DDF7ED", "#E0F6FE", "#FFE4E8", "#EDE4FF"];
-const INK = ["#3F4BC4", "#9A6200", "#0D7A54", "#0B7BA3", "#B32340", "#5B3FC4"];
+const PASTELS = ["#ede9fa", "#f5fcd1", "#e6f7ec", "#f1eaf8", "#ede8f2", "#ede9fa"];
+const INK = ["#4b1fcb", "#4c1979", "#199647", "#6f2dbd", "#4c1979", "#6f2dbd"];
 
 function hash(s: string) {
   let h = 0;

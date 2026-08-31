@@ -103,7 +103,7 @@ export function QuizReview({
                         </span>
                       )}
                       {isRight && (
-                        <span className="shrink-0 text-[12px] font-semibold text-[#0d7a54]">
+                        <span className="shrink-0 text-[12px] font-semibold text-[#199647]">
                           Đáp án
                         </span>
                       )}
@@ -124,7 +124,7 @@ export function QuizReview({
                 {q.correctAnswer && (
                   <span>
                     <span className="text-muted">Đáp án: </span>
-                    <span className="tnum font-semibold text-[#0d7a54]">{q.correctAnswer}</span>
+                    <span className="tnum font-semibold text-[#199647]">{q.correctAnswer}</span>
                   </span>
                 )}
               </div>
