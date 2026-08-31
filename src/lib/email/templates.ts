@@ -104,7 +104,7 @@ export function gradeReturnedMail(input: {
       title: "Bài của bạn đã được trả",
       body: `
         <p style="margin:0 0 12px;">Chào ${esc(input.studentName)},</p>
-        <p style="margin:0 0 16px;">Giáo viên đã chấm xong bài <strong style="color:${INK};">${esc(input.title)}</strong> — lớp ${esc(input.className)}.</p>
+        <p style="margin:0 0 16px;">Giáo viên đã chấm xong bài <strong style="color:${INK};">${esc(input.title)}</strong>, lớp ${esc(input.className)}.</p>
         ${
           input.grade !== null
             ? `<p style="margin:0 0 16px;font-size:28px;font-weight:800;color:${INK};">${input.grade}<span style="font-size:18px;color:${MUTED};">/${input.maxPoints}</span></p>`

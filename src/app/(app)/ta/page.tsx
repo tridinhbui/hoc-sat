@@ -23,7 +23,7 @@ export default async function TaHome() {
     <div className="space-y-6">
       <div>
         <h1>Lớp mình phụ trách</h1>
-        <p className="text-sm text-muted">Điểm danh và chấm bài — hai việc chính của hôm nay.</p>
+        <p className="text-sm text-muted">Điểm danh và chấm bài, hai việc chính của hôm nay.</p>
       </div>
 
       {classes.length === 0 ? (

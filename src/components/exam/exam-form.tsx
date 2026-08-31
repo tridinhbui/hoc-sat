@@ -69,7 +69,7 @@ export function ExamForm({ classId, subject }: { classId: string; subject: Subje
 
         <div>
           <span className="mb-2 block text-[13px] font-semibold text-ink">
-            Module — theo đúng thứ tự làm bài
+            Module, theo đúng thứ tự làm bài
           </span>
           <ul className="mb-2 space-y-2">
             {modules.map((m, i) => (
@@ -124,7 +124,7 @@ export function ExamForm({ classId, subject }: { classId: string; subject: Subje
             <span className="block text-sm font-semibold text-ink">Bật chế độ khoá màn hình</span>
             <span className="block text-[13px] text-muted">
               Ép toàn màn hình, chặn copy-paste, ghi log khi học sinh chuyển tab. Lưu ý: cách này
-              không chặn được điện thoại hay máy thứ hai — muốn chặt thì phải thi tại phòng máy.
+              không chặn được điện thoại hay máy thứ hai, muốn chặt thì phải thi tại phòng máy.
             </span>
           </span>
         </label>

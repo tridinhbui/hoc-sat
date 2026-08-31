@@ -41,7 +41,7 @@ export default async function TeacherHome() {
     <div className="space-y-6">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h1>Chào {ctx.user.name.split(" ").slice(-1)[0]} 👋</h1>
+          <h1>Chào {ctx.user.name.split(" ").slice(-1)[0]} </h1>
           <p className="text-sm text-muted">Hôm nay lớp mình có gì nào.</p>
         </div>
         <Link href="/teacher/classes/new">
@@ -115,7 +115,7 @@ export default async function TeacherHome() {
         <Card className="col-span-5">
           <CardHeader><CardTitle>Cần chấm</CardTitle></CardHeader>
           {ungraded === 0 ? (
-            <p className="text-sm text-muted">Không còn bài nào chờ chấm. Nhẹ người 🎉</p>
+            <p className="text-sm text-muted">Không còn bài nào chờ chấm. Nhẹ người </p>
           ) : (
             <ul className="space-y-2">
               {classes

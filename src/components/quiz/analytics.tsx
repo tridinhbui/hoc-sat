@@ -59,7 +59,7 @@ export function QuizAnalytics({
           <CardHeader>
             <div>
               <CardTitle>Câu sai nhiều nhất</CardTitle>
-              <CardDescription>Xếp theo tỉ lệ đúng thấp nhất — nên chữa lại trên lớp.</CardDescription>
+              <CardDescription>Xếp theo tỉ lệ đúng thấp nhất, nên chữa lại trên lớp.</CardDescription>
             </div>
           </CardHeader>
 

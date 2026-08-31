@@ -58,7 +58,7 @@ export const COPY: Record<Locale, LandingCopy> = {
       titleAccent: "chấm bài tự động.",
       body:
         "Giao bài, chấm trắc nghiệm ngay khi học sinh nộp, điểm danh theo buổi và " +
-        "nhìn ra cả lớp đang vướng câu nào — tất cả trong một chỗ.",
+        "nhìn ra cả lớp đang vướng câu nào, tất cả trong một chỗ.",
       ctaPrimary: "Đăng nhập",
       ctaSecondary: "Xem tính năng",
       note: "Tài khoản do trung tâm cấp. Chưa có thì hỏi giáo viên phụ trách lớp.",
@@ -72,7 +72,7 @@ export const COPY: Record<Locale, LandingCopy> = {
         title: "Giao bài & chấm",
         body:
           "Bài nháp hay giao ngay, có hạn nộp và đính kèm. Chấm kèm nhận xét rồi " +
-          "trả một lượt — điểm chỉ hiện với học sinh khi giáo viên bấm trả bài.",
+          "trả một lượt, điểm chỉ hiện với học sinh khi giáo viên bấm trả bài.",
       },
       {
         key: "quiz",
@@ -104,7 +104,7 @@ export const COPY: Record<Locale, LandingCopy> = {
         title: "Thông báo & tài liệu",
         body:
           "Bảng tin lớp, ghim thông báo quan trọng, tài liệu tải lên có kiểm " +
-          "quyền — file lớp này không lọt sang lớp khác.",
+          "quyền, file lớp này không lọt sang lớp khác.",
       },
       {
         key: "exam",
@@ -165,7 +165,7 @@ export const COPY: Record<Locale, LandingCopy> = {
       note: "Accounts are issued by the centre. Ask your class teacher if you don't have one.",
     },
     featuresHeading: "What's inside",
-    featuresSub: "Things that actually run — not a mock-up.",
+    featuresSub: "Things that actually run, not a mock-up.",
     features: [
       {
         key: "assignment",
@@ -173,7 +173,7 @@ export const COPY: Record<Locale, LandingCopy> = {
         title: "Assign & grade",
         body:
           "Draft or publish, with due dates and attachments. Grade with feedback, " +
-          "then return in one go — marks stay hidden until you hit return.",
+          "then return in one go, marks stay hidden until you hit return.",
       },
       {
         key: "quiz",
@@ -196,7 +196,7 @@ export const COPY: Record<Locale, LandingCopy> = {
         icon: "attendance",
         title: "Per-session attendance",
         body:
-          "Everyone present by default — you only tap the absent ones. Fix history " +
+          "Everyone present by default, you only tap the absent ones. Fix history " +
           "by reopening an old session. Students see their own attendance rate.",
       },
       {
@@ -204,7 +204,7 @@ export const COPY: Record<Locale, LandingCopy> = {
         icon: "materials",
         title: "Announcements & materials",
         body:
-          "A class stream with pinned posts, and uploads behind permission checks — " +
+          "A class stream with pinned posts, and uploads behind permission checks, " +
           "one class's files never reach another.",
       },
       {

@@ -20,7 +20,7 @@ export default async function ChangePasswordPage() {
           </h1>
           {user.mustChangePassword && (
             <p className="text-sm text-muted">
-              Đây là lần đăng nhập đầu tiên — đặt mật khẩu riêng của bạn trước khi vào lớp.
+              Đây là lần đăng nhập đầu tiên, đặt mật khẩu riêng của bạn trước khi vào lớp.
             </p>
           )}
         </div>

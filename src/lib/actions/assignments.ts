@@ -153,7 +153,7 @@ export async function turnInAction(_prev: ActionState, form: FormData): Promise<
   }
 
   revalidateClass(classId, "assignments", "grades");
-  return { ok: "Đã nộp! Ngon lành 🎉" };
+  return { ok: "Đã nộp! Ngon lành " };
 }
 
 export async function unsubmitAction(_prev: ActionState, form: FormData): Promise<ActionState> {

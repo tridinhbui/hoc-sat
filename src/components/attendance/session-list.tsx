@@ -38,7 +38,7 @@ export function SessionList({
             <CardTitle>Điểm danh hôm nay</CardTitle>
             <CardDescription>
               {today}
-              {markedToday ? " — đã điểm danh, bấm để sửa lại." : " — chưa điểm danh."}
+              {markedToday ? ", đã điểm danh, bấm để sửa lại." : ", chưa điểm danh."}
             </CardDescription>
           </div>
           {markedToday && <Badge tone="success">Xong</Badge>}
@@ -71,7 +71,7 @@ export function SessionList({
           </div>
           <div className="min-w-[200px] flex-1">
             <Field label="Ghi chú buổi" hint="Không bắt buộc">
-              <Input name="title" maxLength={120} placeholder="Buổi 12 — Ôn Algebra" />
+              <Input name="title" maxLength={120} placeholder="Buổi 12, Ôn Algebra" />
             </Field>
           </div>
           <SubmitButton variant="secondary" pendingText="Đang mở...">

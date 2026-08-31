@@ -242,7 +242,7 @@ function AddQuestionForm({
         {type === "mcq" && (
           <fieldset className="space-y-2">
             <legend className="mb-1.5 text-[13px] font-semibold text-ink">
-              Lựa chọn — chọn đáp án đúng ngay tại đây
+              Lựa chọn, chọn đáp án đúng ngay tại đây
             </legend>
             {KEYS.map((k) => (
               <div key={k} className="flex items-center gap-2.5">
@@ -275,7 +275,7 @@ function AddQuestionForm({
 
         {type === "free_text" && (
           <Alert tone="success">
-            Câu tự luận không chấm máy được — giáo viên chấm tay ở bảng bài nộp.
+            Câu tự luận không chấm máy được, giáo viên chấm tay ở bảng bài nộp.
           </Alert>
         )}
 

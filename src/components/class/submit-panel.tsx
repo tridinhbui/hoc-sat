@@ -100,7 +100,7 @@ export function SubmitPanel({
       ) : (
         <div className="mt-3 space-y-3">
           {overdue && status === "assigned" && (
-            <Alert>Đã quá hạn — bài nộp sẽ được đánh dấu là trễ.</Alert>
+            <Alert>Đã quá hạn, bài nộp sẽ được đánh dấu là trễ.</Alert>
           )}
 
           <form

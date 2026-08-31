@@ -24,7 +24,7 @@ export function Cu({
       viewBox="0 0 160 160"
       fill="none"
       role="img"
-      aria-label="Cú — mascot của AtlasSAT"
+      aria-label="Cú, mascot của AtlasSAT"
       className={cn("shrink-0", className)}
     >
       {/* bóng nền pastel */}

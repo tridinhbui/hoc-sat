@@ -4,32 +4,32 @@ export function MathCourseIllustration({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "relative h-44 w-full overflow-hidden rounded-t-[var(--radius-lg)] bg-gradient-to-br from-sky-100 via-blue-50 to-indigo-100 p-5",
+        "relative h-44 w-full overflow-hidden rounded-t-[var(--radius-lg)] bg-gradient-to-br from-primary-soft via-primary-soft to-primary-soft p-5",
         className,
       )}
     >
       {/* Badge version góc phải */}
-      <span className="absolute right-4 top-4 rounded-full bg-blue-600 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm">
+      <span className="absolute right-4 top-4 rounded-full bg-primary px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm">
         Cập nhật 2026
       </span>
 
       {/* Brand logo mờ */}
-      <div className="flex items-center gap-1 text-xs font-black tracking-tight text-blue-900/60">
-        <span className="grid size-4 place-items-center rounded-full bg-blue-600 text-[10px] text-white">H</span>
+      <div className="flex items-center gap-1 text-xs font-black tracking-tight text-primary/60">
+        <span className="grid size-4 place-items-center rounded-full bg-primary text-[10px] text-white">H</span>
         AtlasSAT
       </div>
 
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <span className="font-display text-2xl font-black tracking-tight text-blue-950">
-            SAT <span className="text-blue-600">Math</span>
+          <span className="font-display text-2xl font-black tracking-tight text-primary">
+            SAT <span className="text-primary">Math</span>
           </span>
-          <p className="text-xs font-semibold text-blue-800/80">Problem Solving & Advanced Math</p>
+          <p className="text-xs font-semibold text-primary/80">Problem Solving & Advanced Math</p>
           <div className="mt-2.5 flex items-center gap-2">
-            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-blue-700 shadow-xs backdrop-blur-xs">
+            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-xs">
               f(x) = ax² + b
             </span>
-            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-blue-700 shadow-xs backdrop-blur-xs">
+            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-primary shadow-xs backdrop-blur-xs">
               Desmos
             </span>
           </div>
@@ -60,32 +60,32 @@ export function VerbalCourseIllustration({ className }: { className?: string }) 
   return (
     <div
       className={cn(
-        "relative h-44 w-full overflow-hidden rounded-t-[var(--radius-lg)] bg-gradient-to-br from-rose-100 via-orange-50 to-amber-100 p-5",
+        "relative h-44 w-full overflow-hidden rounded-t-[var(--radius-lg)] bg-gradient-to-br from-danger-soft via-accent-soft to-accent-soft p-5",
         className,
       )}
     >
       {/* Badge version góc phải */}
-      <span className="absolute right-4 top-4 rounded-full bg-rose-500 px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm">
+      <span className="absolute right-4 top-4 rounded-full bg-danger px-2.5 py-0.5 text-[11px] font-bold text-white shadow-sm">
         Cập nhật 2026
       </span>
 
       {/* Brand logo mờ */}
-      <div className="flex items-center gap-1 text-xs font-black tracking-tight text-rose-900/60">
-        <span className="grid size-4 place-items-center rounded-full bg-rose-500 text-[10px] text-white">H</span>
+      <div className="flex items-center gap-1 text-xs font-black tracking-tight text-danger/60">
+        <span className="grid size-4 place-items-center rounded-full bg-danger text-[10px] text-white">H</span>
         AtlasSAT
       </div>
 
       <div className="mt-3 flex items-center justify-between">
         <div>
-          <span className="font-display text-2xl font-black tracking-tight text-rose-950">
-            SAT <span className="text-rose-500">Verbal</span>
+          <span className="font-display text-2xl font-black tracking-tight text-danger">
+            SAT <span className="text-danger">Verbal</span>
           </span>
-          <p className="text-xs font-semibold text-rose-800/80">Reading & Writing Strategies</p>
+          <p className="text-xs font-semibold text-danger/80">Reading & Writing Strategies</p>
           <div className="mt-2.5 flex items-center gap-2">
-            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-rose-700 shadow-xs backdrop-blur-xs">
+            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-danger shadow-xs backdrop-blur-xs">
               Vocab in Context
             </span>
-            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-rose-700 shadow-xs backdrop-blur-xs">
+            <span className="rounded-md bg-white/80 px-2 py-0.5 text-[11px] font-bold text-danger shadow-xs backdrop-blur-xs">
               Transitions
             </span>
           </div>

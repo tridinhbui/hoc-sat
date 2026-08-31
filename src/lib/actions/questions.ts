@@ -138,7 +138,7 @@ export async function importQuestionsAction(
   if (res.errors.length > 0) {
     const first = res.errors.slice(0, 3).map((e) => `dòng ${e.line}: ${e.message}`).join(" · ");
     return {
-      error: `Thêm được ${res.created} câu. ${res.errors.length} dòng lỗi — ${first}`,
+      error: `Thêm được ${res.created} câu. ${res.errors.length} dòng lỗi, ${first}`,
     };
   }
   return { ok: `Đã thêm ${res.created} câu.` };

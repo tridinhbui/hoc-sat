@@ -118,10 +118,10 @@ export default async function StudentClassesPage() {
             {/* Thống kê nội dung */}
             <div className="flex items-center gap-5 text-xs font-semibold text-muted">
               <span className="flex items-center gap-1.5">
-                <BookOpen size={14} className="text-rose-500" /> 39 Chủ đề bài giảng
+                <BookOpen size={14} className="text-danger" /> 39 Chủ đề bài giảng
               </span>
               <span className="flex items-center gap-1.5">
-                <GraduationCap size={14} className="text-rose-500" /> 38 Bài đánh giá & Test
+                <GraduationCap size={14} className="text-danger" /> 38 Bài đánh giá & Test
               </span>
             </div>
 
@@ -129,10 +129,10 @@ export default async function StudentClassesPage() {
             <div className="space-y-1.5">
               <div className="flex justify-between text-xs font-bold">
                 <span className="text-muted">Tiến độ khóa học</span>
-                <span className="text-rose-500">28%</span>
+                <span className="text-danger">28%</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-sunken">
-                <div className="h-full w-[28%] rounded-full bg-rose-500" />
+                <div className="h-full w-[28%] rounded-full bg-danger" />
               </div>
             </div>
 

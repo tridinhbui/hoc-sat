@@ -26,7 +26,7 @@ export function AssignmentDetailHeader({
   return (
     <Card>
       <div className="mb-2 flex flex-wrap items-center gap-2">
-        {!publishedAt && <Badge tone="accent">Nháp — học sinh chưa thấy</Badge>}
+        {!publishedAt && <Badge tone="accent">Nháp, học sinh chưa thấy</Badge>}
         {dueAt && (
           <Badge tone={overdue ? "danger" : "neutral"}>
             <CalendarClock />

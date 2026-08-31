@@ -115,7 +115,7 @@ export async function createExam(
         id: crypto.randomUUID(),
         examId,
         orderIndex: i,
-        name: m.name?.trim() || `${preset.name} — Module ${i + 1}`,
+        name: m.name?.trim() || `${preset.name}, Module ${i + 1}`,
         subject: m.subject,
         durationMinutes: preset.durationMinutes,
         questionCount: preset.questionCount,

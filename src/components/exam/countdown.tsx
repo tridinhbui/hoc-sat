@@ -60,7 +60,7 @@ export function Countdown({
     >
       {mm}:{ss}
       <span className="sr-only">
-        {critical ? " — còn dưới một phút" : warn ? " — còn dưới năm phút" : ""}
+        {critical ? ", còn dưới một phút" : warn ? ", còn dưới năm phút" : ""}
       </span>
     </div>
   );

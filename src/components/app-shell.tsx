@@ -93,7 +93,7 @@ export function AppShell({
   return (
     <div className="flex min-h-dvh bg-bg">
       {/* -------------------------------------------------------------
-          SIDEBAR (Desktop) — Phong cách Lumist.ai
+          SIDEBAR (Desktop), Phong cách Lumist.ai
           ------------------------------------------------------------- */}
       <aside className="hidden w-[260px] shrink-0 flex-col border-r border-line bg-surface px-4 py-5 md:flex">
         {/* Logo brand */}

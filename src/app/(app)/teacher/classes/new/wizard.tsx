@@ -102,12 +102,12 @@ export function NewClassWizard() {
               autoFocus
               maxLength={120}
               placeholder={
-                subject === "math" ? "SAT Math — Sáng T7" : "SAT Reading & Writing — Tối T3/T5"
+                subject === "math" ? "SAT Math, Sáng T7" : "SAT Reading & Writing, Tối T3/T5"
               }
             />
           </Field>
 
-          <Field label="Lịch học" hint="Không bắt buộc — hiện dưới tên lớp cho học sinh dễ nhớ">
+          <Field label="Lịch học" hint="Không bắt buộc, hiện dưới tên lớp cho học sinh dễ nhớ">
             <Input name="scheduleNote" maxLength={200} placeholder="19:30–21:30 T3 & T5" />
           </Field>
 

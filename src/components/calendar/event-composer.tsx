@@ -40,7 +40,7 @@ export function EventComposer({
         <div>
           <CardTitle>Thêm vào lịch</CardTitle>
           <CardDescription>
-            Hạn nộp bài và lịch thi tự lên lịch rồi — ở đây chỉ thêm buổi học, buổi bù, hay
+            Hạn nộp bài và lịch thi tự lên lịch rồi, ở đây chỉ thêm buổi học, buổi bù, hay
             thông báo nghỉ.
           </CardDescription>
         </div>
@@ -88,7 +88,7 @@ export function EventComposer({
         </div>
 
         <Field label="Tiêu đề">
-          <Input name="title" required maxLength={200} placeholder="Buổi 12 — Ôn Algebra" />
+          <Input name="title" required maxLength={200} placeholder="Buổi 12, Ôn Algebra" />
         </Field>
 
         <label className="flex items-center gap-2.5 rounded-[var(--radius-md)] bg-sunken px-3.5 py-3">

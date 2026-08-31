@@ -69,6 +69,6 @@ export const ATTEMPT_LABEL: Record<AttemptStatus, string> = {
   not_started: "Chưa vào thi",
   in_progress: "Đang làm bài",
   submitted: "Đã nộp",
-  auto_submitted: "Hết giờ — tự nộp",
+  auto_submitted: "Hết giờ, tự nộp",
   voided: "Đã huỷ",
 };

@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   Lock,
   Plus,
-  Share2,
   Zap,
 } from "lucide-react";
 import { requireRole } from "@/lib/auth/guard";
@@ -17,7 +16,7 @@ import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { relativeDue } from "@/lib/utils/date";
-import { LeagueShield, Lumi, MockTestIllustration } from "@/components/mascot/lumi";
+import { MockTestIllustration } from "@/components/mascot/lumi";
 
 const WEEKDAYS = [
   { label: "CN", active: false },
@@ -53,7 +52,7 @@ export default async function StudentHome() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-black tracking-tight text-ink sm:text-3xl">
-            Chào {ctx.user.name.split(" ").slice(-1)[0]} 👋
+            Chào {ctx.user.name.split(" ").slice(-1)[0]} 
           </h1>
           <p className="mt-1 text-sm font-medium text-muted">
             Mục tiêu Digital SAT hôm nay: trả lời đúng 5 câu & giữ chuỗi ngày học.
@@ -89,7 +88,7 @@ export default async function StudentHome() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="font-display text-4xl font-black text-ink">{streak}</span>
-                <span className="text-3xl">🔥</span>
+                <span className="text-3xl"></span>
               </div>
               <Badge tone="accent" className="rounded-full font-bold">
                 Giữ lửa học tập
@@ -120,54 +119,6 @@ export default async function StudentHome() {
                 </div>
               ))}
             </div>
-          </Card>
-
-          {/* 2. Thẻ Mời bạn học / Động lực (giống ảnh 2) */}
-          <Card className="relative overflow-hidden rounded-[var(--radius-lg)] border-line/80 bg-gradient-to-br from-amber-50/70 via-orange-50/40 to-white p-5 shadow-soft">
-            <div className="flex items-start gap-3">
-              <Lumi pose="gift" size={54} className="shrink-0 drop-shadow-sm" />
-              <div>
-                <h2 className="text-base font-bold text-ink">Thử thách cùng bạn bè</h2>
-                <p className="mt-1 text-xs leading-relaxed text-muted">
-                  Mời bạn cùng luyện thi Digital SAT — nhận thêm tài liệu phân tích lỗi sai khi cùng
-                  tham gia.
-                </p>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-purple-500 via-pink-500 to-orange-400 py-2.5 text-xs font-bold text-white shadow-xs transition-transform hover:opacity-95 active:scale-[0.99]"
-            >
-              <Share2 size={14} /> Mời bạn bè tham gia
-            </button>
-          </Card>
-
-          {/* 3. Thẻ Kết nối cùng mục tiêu (giống ảnh 2) */}
-          <Card className="rounded-[var(--radius-lg)] border-line/80 p-4 shadow-soft">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="grid size-10 place-items-center rounded-full bg-gradient-to-br from-orange-400 to-amber-500 font-black text-white shadow-xs">
-                  SAT
-                </div>
-                <div>
-                  <h3 className="text-xs font-bold text-ink">Cùng đặt mục tiêu 1400+ SAT</h3>
-                  <p className="text-[11px] text-muted">Phòng luyện đề chung · 24 bạn đang online</p>
-                </div>
-              </div>
-
-              <div className="flex gap-1">
-                <span className="size-2 rounded-full bg-primary animate-pulse" />
-                <span className="size-2 rounded-full bg-slate-200" />
-              </div>
-            </div>
-
-            <button
-              type="button"
-              className="mt-3 w-full rounded-xl bg-primary/10 py-2 text-xs font-bold text-primary transition-colors hover:bg-primary hover:text-white"
-            >
-              Tham gia phòng luyện nhóm
-            </button>
           </Card>
 
           {/* 4. Thẻ Từ vựng trong ngày — Word of the day (giống ảnh 2) */}
@@ -268,30 +219,6 @@ export default async function StudentHome() {
             </div>
           </Card>
 
-          {/* 3. Bronze League Card (Huy hiệu khiên 3D giống ảnh 2) */}
-          <Card className="flex flex-col gap-4 rounded-[var(--radius-lg)] border-line/80 p-5 shadow-soft sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex items-center gap-4">
-              <LeagueShield tier="bronze" size={54} />
-              <div>
-                <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-ink">Hạng Đồng (Bronze League)</h3>
-                  <span className="rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-extrabold text-amber-700">
-                    Tuần này
-                  </span>
-                </div>
-                <p className="mt-1 text-xs text-muted">
-                  Trả lời đúng ít nhất 1 bài tập tuần này để gia nhập bảng xếp hạng thăng hạng.
-                </p>
-              </div>
-            </div>
-
-            <Link href="/student" className="shrink-0">
-              <Button variant="secondary" size="sm" className="w-full rounded-full font-bold">
-                Xem bảng đấu
-              </Button>
-            </Link>
-          </Card>
-
           {/* 4. Danh sách Việc cần làm (Assignments Todo) */}
           <Card className="rounded-[var(--radius-lg)] border-line/80 p-5 shadow-soft">
             <CardHeader className="flex items-center justify-between p-0 pb-3">
@@ -311,7 +238,7 @@ export default async function StudentHome() {
             {todo.length === 0 ? (
               <div className="flex items-center gap-3 rounded-xl bg-sunken/60 p-4 text-xs font-medium text-muted">
                 <CheckCircle2 size={18} className="text-success" />
-                <span>Không còn bài nào cần nộp. Tuyệt vời 🎉</span>
+                <span>Không còn bài nào cần nộp. Tuyệt vời </span>
               </div>
             ) : (
               <ul className="space-y-2.5">
