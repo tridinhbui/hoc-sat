@@ -106,7 +106,7 @@
   /* Focus ring nhìn thấy rõ ở mọi control — không bao giờ outline:none trần */
   :focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(91, 108, 255, 0.28);
+    box-shadow: 0 0 0 3px rgba(25, 150, 71, 0.32);
     border-radius: var(--radius-sm);
   }
 
@@ -191,8 +191,8 @@
    Tone trung tính, bỏ playful. Không mascot, không emoji, không confetti.
    ================================================================== */
 .exam-mode {
-  background: #0f1b45;
-  color: #e8ecf8;
+  background: #2b0e45;
+  color: #efe7f5;
   user-select: none;
   -webkit-user-select: none;
 }
