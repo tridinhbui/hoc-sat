@@ -52,7 +52,7 @@
   // (giáo viên mở màn giám sát, học sinh vào lại). Xem PLAN.md §3.
 
   "vars": {
-    "APP_NAME": "HocSAT",
+    "APP_NAME": "AtlasSAT",
     "APP_TZ": "Asia/Ho_Chi_Minh"
   }
 }
